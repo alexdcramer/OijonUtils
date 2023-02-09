@@ -7,7 +7,6 @@ public class Multitag {
 	private String name;
 	private ArrayList<Tag> subtags = new ArrayList<Tag>();
 	private ArrayList<Multitag> subMultitags = new ArrayList<Multitag>();
-	private boolean closed = false;
 	
 	public Multitag(String name, ArrayList<Tag> subtags, ArrayList<Multitag> subMultitags) {
 		this.name = name;
@@ -55,12 +54,7 @@ public class Multitag {
 		}
 		return false;
 	}
-	public void open() {
-		this.closed = false;
-	}
-	public void close() {
-		this.closed = true;
-	}
+
 	public String toString() {
 		String returnString = this.getStart() + "\n";
 		for (int i = 0; i < subtags.size(); i++) {
