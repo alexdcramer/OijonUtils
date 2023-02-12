@@ -14,7 +14,7 @@ import java.util.Properties;
 import com.diogonunes.jcolor.AnsiFormat;
 import static com.diogonunes.jcolor.Attribute.*;
 
-//last edit: 2/4/23 -N3
+//last edit: 2/11/2023 -N3
 
 
 
@@ -39,12 +39,20 @@ public class Log {
 	AnsiFormat fCritical = new AnsiFormat(BOLD(), RED_TEXT(), YELLOW_BACK());
 	
 	/**
-	 * Creates the log object
+	 * Creates the log object. This should only be used in the main class, unless you want multiple log files.
+	 * Please note: This will create a directory under the directory specified called "/logs/".
+	 * @param logdir The directory, in string format, of the log.
 	 */
 	public Log(String logdir) {
 		this(logdir, false);
 	}
 	
+	/**
+	 * Creates the log object.
+	 * Please note: This will create a directory under the directory specified called "/logs/".
+	 * @param logdir The directory, in string format, of the log.
+	 * @param useCurrent True if a log file already exists, false otherwise
+	 */
 	public Log(String logdir, boolean useCurrent) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.today = LocalDate.now().format(formatter);
@@ -117,6 +125,10 @@ public class Log {
 	}
 	*/
 	
+	/**
+	 * Prints a debug line
+	 * @param input What is to be printed
+	 */
 	public void debug(String input) {
 		if (debug) {
 			setNow();
@@ -197,7 +209,10 @@ public class Log {
 		}
 	    
 	}
-	
+	/**
+	 * Prints a critical error.
+	 * @param input What is to be printed
+	 */
 	public void critical(String input) {
 		setNow();
 		String output = "[CRITICAL] [" + this.now + "] - " + input;
@@ -235,12 +250,21 @@ public class Log {
 		debug = bool;
 	}
 	
+	/**
+	 * Currently does not do anything, as the temp file does not actually control the file used anymore
+	 * @deprecated As of Oijon Utils v1.1.2, as the way file selection is handled has changed. Please use the true/false flag on log creation instead.
+	 */
+	@Deprecated
 	public void closeLog() {
 		this.info("Closing log...");
 		this.tempFile.delete();
 		this.info("Log closed.");
 	}
 	
+	/**
+	 * Gets the current file a log is writing to.
+	 * @return The path to the current file
+	 */
 	public String getLogFile() {
 		return file.toString();
 	}

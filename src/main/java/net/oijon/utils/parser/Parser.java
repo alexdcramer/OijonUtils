@@ -18,11 +18,22 @@ import net.oijon.utils.parser.data.Phonology;
 import net.oijon.utils.parser.data.Tag;
 import net.oijon.utils.parser.data.Word;
 
+//last edit: 2/11/2023 -N3
+
+/**
+ * Parses a .language file, and allows various parts to be accessed
+ * @author alex
+ *
+ */
 public class Parser {
 	
 	Log log = new Log(System.getProperty("user.home") + "/.oijonUtils", true);
 	private Multitag tag;
 	
+	/**
+	 * Creates an object to hold the contents of a .language structured string
+	 * @param input The string to be parsed.
+	 */
 	public Parser(String input) {
 		log.setDebug(true);
 		input.replace("	", "");
@@ -38,6 +49,10 @@ public class Parser {
 		}
 	}
 	
+	/**
+	 * Creates an object to hold the contents of a .language structured file
+	 * @param file The file to be read
+	 */
 	public Parser(File file) {
 		log.setDebug(true);
 		try {
@@ -61,10 +76,19 @@ public class Parser {
 		
 	}
 	
+	/**
+	 * Gets the containing tag, including all subtags
+	 * @return
+	 */
 	public Multitag getPHOSYSTag() {
 		return this.tag;
 	}
 	
+	/**
+	 * Parses a multitag from a .language structured string
+	 * @param input The .language structured string to be read
+	 * @return A multitag object with all data inside.
+	 */
 	private Multitag parseMulti(String input) {
 		input = input.replace("	", "");
 		String[] splitLines = input.split("\n");
@@ -111,6 +135,11 @@ public class Parser {
 		return tag;
 	}
 	
+	/**
+	 * Parses a phonology system from a Parser
+	 * @return A PhonoSystem object with data from the Parser.
+	 * @throws Exception Thrown when a phonology system could not be found
+	 */
 	public PhonoSystem parsePhonoSys() throws Exception {
 		try {
 			Multitag tablelist = this.tag.getMultitag("Tablelist");
@@ -173,6 +202,11 @@ public class Parser {
 			throw e;
 		}
 	}
+	/**
+	 * Parses a phonology from a Parser
+	 * @return A Phonology object with data from the Parser.
+	 * @throws Exception Thrown when a phonology could not be found
+	 */
 	public Phonology parsePhono() throws Exception {
 		try {
 			PhonoSystem phonoSystem = this.parsePhonoSys();
@@ -189,6 +223,11 @@ public class Parser {
 			throw e;
 		}
 	}
+	/**
+	 * Parses a language from a Parser
+	 * @return A Language object with data from the Parser.
+	 * @throws Exception Thrown when a language could not be found
+	 */
 	public Language parseLanguage() throws Exception {
 		Phonology phono = this.parsePhono();
 		Lexicon lexicon = this.parseLexicon();
@@ -215,6 +254,11 @@ public class Parser {
 		return lang;
 	}
 	
+	/**
+	 * Parses a lexicon from a Parser
+	 * @return A Lexicon object with data from the Parser.
+	 * @throws Exception Thrown when a lexicon could not be found
+	 */
 	public Lexicon parseLexicon() {
 		try {
 			Lexicon lexicon = new Lexicon();

@@ -8,10 +8,19 @@ import java.util.List;
 
 import net.oijon.utils.info.Info;
 
+//last edit: 2/11/2023 -N3
+
+/**
+ * Reads an Oijon log from a file into another file, while also formatting it.
+ * @author alex
+ *
+ */
 public class Reader {
 
 	/**
-	 * Prints an Oijon Utils log file to console
+	 * Reads a log into the current log.
+	 * @param fileName The file to be read
+	 * @param destinationFile The directory (minus /logs/) where the log should be written
 	 */
 	public static void readLog(String fileName, String destinationFile) {
 		try {
@@ -25,7 +34,7 @@ public class Reader {
 	        bufferedReader.close();
 	        String[] lineArray = lines.toArray(new String[lines.size()]);
 	        
-	        Log log = new Log(destinationFile, false);
+	        Log log = new Log(destinationFile, true);
 	        
 	        if (lineArray[4].equals("===BEGIN OIJON LOG===") == false) {
 	        	log.err("This file was not made with Oijon Utils! Oijon Utils will attempt to read this file, however color may not be supported.");

@@ -3,15 +3,16 @@ package net.oijon.utils.parser.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//last edit: 11/4/22 -N3
+//last edit: 2/11/23 -N3
 
+/**
+ * Creates the equivalent of a row on the IPA chart.
+ * @author alex
+ *
+ */
 public class PhonoCategory {
 
 	/**
-	 * You may be wondering, why not use Phonemes here?
-	 * Well, that's because Phonemes are meant to attach orthography to phonology
-	 * We aren't there yet. This is instead used by Phonology to check if a Phoneme is actually valid
-	 * 
 	 * * marks possible sounds with no symbol
 	 * # marks impossible sounds
 	 */

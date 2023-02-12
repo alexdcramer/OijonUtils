@@ -10,7 +10,13 @@ import java.util.Date;
 
 import net.oijon.utils.info.Info;
 
-//last edit: 2/8/2023 -N3
+//last edit: 2/11/2023 -N3
+
+/**
+ * Bundles all parts of a language together into one object
+ * @author alex
+ *
+ */
 public class Language {
 
 	public static final Language NULL = new Language("null");
@@ -24,6 +30,12 @@ public class Language {
 	private Date edited = Date.from(Instant.now());
 	private String versionEdited = Info.getVersion();
 	
+	/**
+	 * Gets all the .language files in the Susquehanna directory
+	 * @return A list of .language files
+	 * @deprecated as of v1.1.2, as this was Oijon Susquehanna-specific. Please use {@link #getLanguageFiles(File) getLanguageFiles(File)} instead. 
+	 */
+	@Deprecated
 	public static File[] getLanguageFiles() {
 		File[] files;
 		try {
@@ -48,65 +60,193 @@ public class Language {
         }
 		return files;
 	}
+	
+	/**
+	 * Gets a list of all .language files in a specified directory. Does not currently support looking into subdirectories.
+	 * @param f The directory to look in
+	 * @return A list of all .language files in a specified directory.
+	 */
+	public static File[] getLanguageFiles(File f) {
+		//TODO: Search in subdirectories as well
+		File[] files;
+		try {
+            FilenameFilter filter = new FilenameFilter() {
+                @Override
+                public boolean accept(File f, String name) {
+                	if (name.startsWith(".")) {
+                		return false;
+                	} else if (name.endsWith(".language")) {
+                		return true;
+                	}
+                	return false;
+                }
+            };
+            files = f.listFiles(filter);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            files = null;
+        }
+		return files;
+	}
 		
+	/**
+	 * Creates a Language object
+	 * @param name The name of the language
+	 */
 	public Language(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * Gets the name of a Language object
+	 * @return The name of the language
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Gets the autonym of a language
+	 * @return The autonym of the language
+	 */
 	public String getAutonym() {
 		return autonym;
 	}
+	
+	/**
+	 * Sets an autonym for a language
+	 * @param autonym The autonym to be set
+	 */
 	public void setAutonym(String autonym) {
 		this.autonym = autonym;
 	}
+	
+	/**
+	 * Gets a phonology of a language
+	 * @return a Phonology object of the language
+	 */
 	public Phonology getPhono() {
 		return phono;
 	}
+	
+	/**
+	 * Sets a new phonology for a language
+	 * @param phono The Phonology object to be set
+	 */
 	public void setPhono(Phonology phono) {
 		this.phono = phono;
 	}
+	
+	/**
+	 * Gets a lexicon of a language
+	 * @return a Lexicon object of the language
+	 */
 	public Lexicon getLexicon() {
 		return lexicon;
 	}
+	
+	/**
+	 * Sets a new lexicon for a language
+	 * @param lexicon The Lexicon object to be set
+	 */
 	public void setLexicon(Lexicon lexicon) {
 		this.lexicon = lexicon;
 	}
+	
+	/**
+	 * Gets the parent language of a language (for example, the parent language of a dialect)
+	 * @return a Language object representing the parent language
+	 * @deprecated as of v1.1.2, as this just straight up does not work currently. The way this is currently set, an *entire language* would be stored for each parent. 
+	 * 		If we, say, stored English like this, we would have language files going all the way back to Proto-Indo-European, which would be a disaster file-size  and memory wise.
+	 * 		v1.2.0 will have a solution to this.
+	 */
+	@Deprecated
 	public Language getParent() {
 		return parent;
 	}
+	
+	/**
+	 * Gets the name of the parent language. Please note that this will most likely return null.
+	 * @return The name of the parent language
+	 */
 	public String getParentName() {
 		return parent.getName();
 	}
+	
+	/**
+	 * Sets a parent language of a language
+	 * @param parent The language to be the parent
+	 * @deprecated as of v1.1.2, as this just straight up does not work currently. The way this is currently set, an *entire language* would be stored for each parent. 
+	 * 		If we, say, stored English like this, we would have language files going all the way back to Proto-Indo-European, which would be a disaster file-size  and memory wise.
+	 * 		v1.2.0 will have a solution to this.
+	 */
 	public void setParent(Language parent) {
 		this.parent = parent;
 	}
+	/**
+	 * Gets the datetime when the language was created.
+	 * @return The datetime when the language was created.
+	 */
 	public Date getCreated() {
 		return this.created;
 	}
+	/**
+	 * Sets the creation date for a Language. Should only be used for reading in files, should not be used for writing to files.
+	 * @param date The datetime when the language was created.
+	 */
 	public void setCreated(Date date) {
 		this.created = date;
 	}
+	/**
+	 * Gets the last edit date of a language.
+	 * @return The datetime when the language was last edited.
+	 */
 	public Date getEdited() {
 		return this.edited;
 	}
+	/**
+	 * Sets the last edit date of a language. Should be used when changing anything about a language.
+	 * @param date The datetime (preferably the exact time the method was called) that the language was last edited.
+	 */
 	public void setEdited(Date date) {
 		this.edited = date;
 	}
+	/**
+	 * Checks if the language is flagged as read-only
+	 * @return true if read-only, false otherwise.
+	 */
 	public boolean isReadOnly() {
 		return isReadOnly;
 	}
+	/**
+	 * Sets the read-only status of a language
+	 * Please note! This only makes it so that Utils will not edit it, however that cannot be said for the file itself.
+	 * @param bool The read-only status desired
+	 */
 	public void setReadOnly(boolean bool) {
 		this.isReadOnly = bool;
 	}
+	/**
+	 * Gets the version that the language was last edited in.
+	 * @return The version the language was last edited in.
+	 */
 	public String getVersion() {
 		return versionEdited;
 	}
+	/**
+	 * Sets the version that the language was last edited in. Should be called after every edit.
+	 * @param version The version the language was last edited in.
+	 */
 	public void setVersion(String version) {
 		this.versionEdited = version;
 	}
+	
+	/**
+	 * Writes a language to a file
+	 * @param file The file to write to
+	 * @throws IOException Should never be thrown, however would not compile without it. If thrown, something has gone horribly wrong...
+	 */
 	public void toFile(File file) throws IOException {
 		edited = Date.from(Instant.now());
 		versionEdited = Info.getVersion();
@@ -125,6 +265,9 @@ public class Language {
 		bw.write(data);
 		bw.close();
 	}
+	/**
+	 * Converts a language into a string
+	 */
 	public String toString() {
 		String returnString = "===Meta Start===\n";
 		returnString += "susquehannaVersion:" + versionEdited + "\n";

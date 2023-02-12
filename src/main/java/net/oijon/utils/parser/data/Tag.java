@@ -1,15 +1,33 @@
 package net.oijon.utils.parser.data;
 
+/**
+ * Stores a tag in a .language file
+ * @author alex
+ *
+ */
+
+//last edit: 2/12/23 -N3
+
 public class Tag {
 	
 	static Tag NULL = new Tag("", "");
 	private String name = "";
 	private String data = "";
 
+	/**
+	 * Creates a tag
+	 * @param name The name of the tag (First part before the :)
+	 * @param data The data the tag contains (Second part after the :)
+	 */
 	public Tag(String name, String data) {
 		this.name = name;
 		this.data = data;
 	}
+	
+	/**
+	 * Creates a tag
+	 * @param tag The tag in string format (name:data)
+	 */
 	public Tag(String tag) {
 		String[] split = tag.split(":");
 		if (split.length == 2) {
@@ -22,22 +40,51 @@ public class Tag {
 		}
 	}
 	
+	/**
+	 * Gets the name of the tag
+	 * @return The name of the tag
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the name of the tag.
+	 * @param name The new name
+	 */
 	protected void setName(String name) {
 		this.name = name;
 	}
+	
+	/**
+	 * Gets the data of a tag
+	 * @return The data of a tag
+	 */
 	public String value() {
 		return data;
 	}
+	
+	/**
+	 * Sets the data of a tag
+	 * @param data The new data for the tag
+	 */
 	public void set(String data) {
 		this.data = data;
 	}
+	
+	/**
+	 * Converts a tag to a string
+	 */
 	public String toString() {
 		String returnString = this.name + ":" + this.data;
 		return returnString;
 	}
+	
+	/**
+	 * Checks if two tags share the same name.
+	 * @param tag The tag to be checked against
+	 * @return true if the names are the same, false otherwise
+	 */
 	public boolean isSameTag(Tag tag) {
 		if (this.name.equals(tag.getName())) {
 			return true;
@@ -45,6 +92,12 @@ public class Tag {
 			return false;
 		}
 	}
+	
+	/**
+	 * Checks if two tags are identical.
+	 * @param tag The tag to be checked against.
+	 * @return true if the tags are identical, false otherwise.
+	 */
 	public boolean isEqual(Tag tag) {		
 		if (this.name.equals(tag.getName())) {
 			if (this.data.equals(tag.value())) {
