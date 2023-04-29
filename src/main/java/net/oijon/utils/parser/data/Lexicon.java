@@ -101,9 +101,7 @@ public class Lexicon {
 		}
 	}
 	
-	/**
-	 * Converts a lexicon to a string.
-	 */
+	@Override
 	public String toString() {
 		String returnString = "===Lexicon Start===\n";
 		for (int i = 0; i < wordList.size(); i++) {
@@ -111,5 +109,16 @@ public class Lexicon {
 		}
 		returnString += "===Lexicon End===";
 		return returnString;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Lexicon) {
+			Lexicon l = (Lexicon) obj;
+			if (wordList.equals(l.wordList)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

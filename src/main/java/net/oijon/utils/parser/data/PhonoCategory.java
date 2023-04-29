@@ -149,4 +149,15 @@ public class PhonoCategory {
 	public int size() {
 		return sounds.size();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PhonoCategory) {
+			PhonoCategory p = (PhonoCategory) obj;
+			if (p.name.equals(name) & p.sounds.equals(sounds)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

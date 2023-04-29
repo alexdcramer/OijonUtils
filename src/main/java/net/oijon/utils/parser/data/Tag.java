@@ -6,7 +6,7 @@ package net.oijon.utils.parser.data;
  *
  */
 
-//last edit: 2/12/23 -N3
+//last edit: 4/29/23 -N3
 
 public class Tag {
 	
@@ -94,14 +94,24 @@ public class Tag {
 	}
 	
 	/**
-	 * Checks if two tags are identical.
-	 * @param tag The tag to be checked against.
-	 * @return true if the tags are identical, false otherwise.
+	 * Checks if two tags are equal
+	 * @param tag The tag to check
+	 * @return true if equal, false otherwise
+	 * @deprecated as of v1.2.0, as this should have been handled via equals() instead.
 	 */
-	public boolean isEqual(Tag tag) {		
-		if (this.name.equals(tag.getName())) {
-			if (this.data.equals(tag.value())) {
-				return true;
+	@Deprecated
+	public boolean isEqual(Tag tag) {
+		return this.equals(tag);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Tag) {
+			Tag tag = (Tag) obj;
+			if (this.name.equals(tag.getName())) {
+				if (this.data.equals(tag.value())) {
+					return true;
+				}
 			}
 		}
 		return false;

@@ -124,4 +124,17 @@ public class PhonoTable {
 	public boolean verify() {
 		return true;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PhonoTable) {
+			PhonoTable p = (PhonoTable) obj;
+			if (p.name.equals(name) & p.columnNames.equals(columnNames) & p.rows.equals(rows) &
+					p.soundsPerCell == soundsPerCell) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
 }

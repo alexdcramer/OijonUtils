@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Date;
 
 import net.oijon.utils.info.Info;
+import net.oijon.utils.parser.Parser;
 
 //last edit: 2/11/2023 -N3
 
@@ -21,9 +22,11 @@ public class Language {
 
 	public static final Language NULL = new Language("null");
 	private String autonym = "null";
+	private String id = "null";
 	private String name = "null";
 	private Phonology phono = new Phonology();
 	private Lexicon lexicon = new Lexicon();
+	private Orthography ortho = new Orthography();
 	private Language parent = Language.NULL;
 	private boolean isReadOnly = false;
 	private Date created = Date.from(Instant.now());
@@ -99,6 +102,26 @@ public class Language {
 	}
 	
 	/**
+	 * Copy constructor
+	 * @param l The language to copy
+	 */
+	public Language(Language l) {
+		// FIXME: some of these are not resource leak proof...
+		autonym = l.autonym;
+		id = l.id;
+		name = l.name;
+		phono = l.phono; // !FIXME!
+		lexicon = l.lexicon; // !FIXME!
+		ortho = l.ortho; // !FIXME!
+		parent = new Language(l.parent);
+		isReadOnly = l.isReadOnly;
+		created = new Date(l.created.toInstant().toEpochMilli());
+		// current time
+		edited = new Date(System.currentTimeMillis());
+		versionEdited = Info.getVersion();
+	}
+	
+	/**
 	 * Gets the name of a Language object
 	 * @return The name of the language
 	 */
@@ -139,6 +162,18 @@ public class Language {
 	}
 	
 	/**
+	 * Gets an orthography of a language
+	 * @return an Orthography object of the language
+	 */
+	public Orthography getOrtho() {
+		return ortho;
+	}
+	
+	public void setOrtho(Orthography ortho) {
+		this.ortho = ortho;
+	}	
+	
+	/**
 	 * Gets a lexicon of a language
 	 * @return a Lexicon object of the language
 	 */
@@ -156,12 +191,9 @@ public class Language {
 	
 	/**
 	 * Gets the parent language of a language (for example, the parent language of a dialect)
+	 * This method used to be deprecated, however no longer is.
 	 * @return a Language object representing the parent language
-	 * @deprecated as of v1.1.2, as this just straight up does not work currently. The way this is currently set, an *entire language* would be stored for each parent. 
-	 * 		If we, say, stored English like this, we would have language files going all the way back to Proto-Indo-European, which would be a disaster file-size  and memory wise.
-	 * 		v1.2.0 will have a solution to this.
 	 */
-	@Deprecated
 	public Language getParent() {
 		return parent;
 	}
@@ -179,10 +211,31 @@ public class Language {
 	 * @param parent The language to be the parent
 	 * @deprecated as of v1.1.2, as this just straight up does not work currently. The way this is currently set, an *entire language* would be stored for each parent. 
 	 * 		If we, say, stored English like this, we would have language files going all the way back to Proto-Indo-European, which would be a disaster file-size  and memory wise.
-	 * 		v1.2.0 will have a solution to this.
+	 * 		Please use {@link setParent(String, File) setParent(String, File)} instead.
 	 */
 	public void setParent(Language parent) {
 		this.parent = parent;
+	}
+	
+	/**
+	 * Sets a parent language of a language
+	 * @param parentName The name of the parent language.
+	 * @param dir The directory that the language is in.
+	 */
+	public void setParent(String parentName, File dir) {
+		File[] potentialFiles = getLanguageFiles(dir);
+		for (int i = 0; i < potentialFiles.length; i++) {
+			Parser parser = new Parser(potentialFiles[i]);
+			try {
+				Language parent = parser.parseLanguage();
+				if (parent.getName().equals(parentName)) {
+					this.parent = parent;
+					return;
+				}
+			} catch (Exception e) {
+				
+			}
+		}
 	}
 	/**
 	 * Gets the datetime when the language was created.
@@ -242,6 +295,14 @@ public class Language {
 		this.versionEdited = version;
 	}
 	
+	public String getID() {
+		return id;
+	}
+	
+	public void setID(String id) {
+		this.id = id;
+	}
+	
 	/**
 	 * Writes a language to a file
 	 * @param file The file to write to
@@ -265,13 +326,30 @@ public class Language {
 		bw.write(data);
 		bw.close();
 	}
+	
+	@SuppressWarnings("deprecation")
+	/**
+	 * Generates an ID for the language
+	 */
+	public void generateID() {
+		// theoretically this prevents an id from being overwritten
+		if (id.equals("null")) {
+			int rand = (int) (Math.random() * 100000);
+			// "its deprecated" i dont care
+			// why does DateTimeFormatter not accept date objects :(
+			id = name.toUpperCase() + created.getYear() + created.getMonth() + created.getDay() +
+					created.getHours() + created.getMinutes() + created.getSeconds() + rand;
+		}
+	}
+	
 	/**
 	 * Converts a language into a string
 	 */
 	public String toString() {
 		String returnString = "===Meta Start===\n";
-		returnString += "susquehannaVersion:" + versionEdited + "\n";
+		returnString += "utilsVersion:" + versionEdited + "\n";
 		returnString += "name:" + name + "\n";
+		returnString += "id:" + id + "\n";
 		returnString += "autonym:" + autonym + "\n";
 		returnString += "timeCreated:" + created.getTime() + "\n";
 		returnString += "lastEdited:" + edited.getTime() + "\n";
@@ -279,10 +357,29 @@ public class Language {
 		returnString += "parent:" + parent.getName() + "\n";
 		returnString += "===Meta End===\n";
 		returnString += phono.toString() + "\n";
+		returnString += ortho.toString() + "\n";
 		returnString += lexicon.toString();
 		return returnString;
 	}
 	
-	//TODO: make a check if languages equal each other
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Language) {
+			Language l = (Language) obj;
+			
+			if (l.autonym.equals(autonym) & l.id.equals(id) & l.name.equals(name) & l.phono.equals(phono) &
+					l.lexicon.equals(lexicon) & l.created.equals(created) &
+					l.isReadOnly == isReadOnly) {
+				/*
+				 * Does not check for:
+				 * - parent (may be removed in future)
+				 * - date edited (will never be equal)
+				 * - version edited (may or may not be equal)
+				 */
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

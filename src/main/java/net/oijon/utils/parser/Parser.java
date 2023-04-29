@@ -11,6 +11,7 @@ import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.data.Language;
 import net.oijon.utils.parser.data.Lexicon;
 import net.oijon.utils.parser.data.Multitag;
+import net.oijon.utils.parser.data.Orthography;
 import net.oijon.utils.parser.data.PhonoCategory;
 import net.oijon.utils.parser.data.PhonoSystem;
 import net.oijon.utils.parser.data.PhonoTable;
@@ -228,14 +229,29 @@ public class Parser {
 	 * @return A Language object with data from the Parser.
 	 * @throws Exception Thrown when a language could not be found
 	 */
+	@SuppressWarnings("deprecation") // still not sure how im gonna handle language parents
+	// perhaps each language could have an ID, and the language parent could be written
+	// as {name}{date-created}{randomnum}?
 	public Language parseLanguage() throws Exception {
 		Phonology phono = this.parsePhono();
 		Lexicon lexicon = this.parseLexicon();
+		Orthography ortho = this.parseOrtho();
 		Multitag meta = this.tag.getMultitag("Meta");
-		Tag ver = meta.getDirectChild("susquehannaVersion");
-		if (!ver.value().isBlank()) {
-			log.info("Language created with " + ver.value());
+		Tag ver = new Tag("utilsVersion");
+		try {
+			ver = meta.getDirectChild("utilsVersion");
+			if (!ver.value().isBlank()) {
+				log.info("Language created with " + ver.value());
+			}
+		} catch (Exception e) {
+			ver = meta.getDirectChild("susquehannaVersion");
+			if (!ver.value().isBlank()) {
+				log.info("Language created with " + ver.value());
+			}
+			log.warn("This language appears to have been created with a very early version of Oijon Utils!");
+			log.warn("The susquehannaVersion tag was deprecated as of 1.2.0.");
 		}
+		
 		Tag timeCreated = meta.getDirectChild("timeCreated");
 		Tag lastEdited = meta.getDirectChild("lastEdited");
 		Tag readonly = meta.getDirectChild("readonly");
@@ -243,7 +259,22 @@ public class Parser {
 		Tag autonym = meta.getDirectChild("autonym");
 		Tag parent = meta.getDirectChild("parent");
 		Language lang = new Language(name.value());
+		
+		Tag id = new Tag("id");
+		try {
+			id = meta.getDirectChild("id");
+			if (!id.value().isBlank()) {
+				log.info("ID of language is " + id.value());
+			}
+			lang.setID(id.value());
+		} catch (Exception e) {
+			log.warn("This language appears to have been created with a very early version of Oijon Utils!");
+			log.warn("The id tag was required as of 1.2.0.");
+			lang.generateID();
+		}
+		
 		lang.setPhono(phono);
+		lang.setOrtho(ortho);
 		lang.setLexicon(lexicon);
 		lang.setCreated(new Date(Long.parseLong(timeCreated.value())));
 		lang.setEdited(new Date(Long.parseLong(lastEdited.value())));
@@ -252,6 +283,22 @@ public class Parser {
 		lang.setParent(new Language(parent.value()));
 		lang.setVersion(ver.value());
 		return lang;
+	}
+	
+	public Orthography parseOrtho() {
+		try {
+			Orthography ortho = new Orthography();
+			Multitag orthoTag = this.tag.getMultitag("Orthography");
+			ArrayList<Tag> orthoPairs = orthoTag.getSubtags();
+			for (int i = 0; i < orthoPairs.size(); i++) {
+				ortho.add(orthoPairs.get(i).getName(), orthoPairs.get(i).value());
+				log.debug("Added pair " + orthoPairs.get(i).getName() + ":" + orthoPairs.get(i).value());
+			}
+			return ortho;
+		} catch (Exception e) {
+			log.err("No orthography found! Has one been created? Returning a blank orthography...");
+			return new Orthography();
+		}
 	}
 	
 	/**

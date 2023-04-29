@@ -225,10 +225,26 @@ public class Word {
 		return homonyms;
 	}
 	
-	/**
-	 * Converts a word to a string
-	 * Sounds like essentially the same thing, but I assure you it is not.
-	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Word) {
+			Word w = (Word) obj;
+			if (w.name.equals(name) & w.meaning.equals(meaning) & w.pronounciation.equals(pronounciation) &
+					w.etymology.equals(etymology) & w.classes.equals(classes) &
+					w.creationDate.equals(creationDate) & w.synonyms.equals(synonyms) &
+					w.homonyms.equals(homonyms)) {
+				/**
+				 * Does not check for:
+				 * - Source language (will probably be removed)
+				 * - Edit date (not relevant to equals)
+				 */
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public String toString() {
 		String returnString = "===Word Start===\n";
 		returnString += "wordname:" + name + "\n";

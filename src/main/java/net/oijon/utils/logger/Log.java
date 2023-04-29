@@ -54,6 +54,8 @@ public class Log {
 	 * @param useCurrent True if a log file already exists, false otherwise
 	 */
 	public Log(String logdir, boolean useCurrent) {
+		File logFolder = new File(logdir + "/logs/");
+		logFolder.mkdirs();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.today = LocalDate.now().format(formatter);
 		File logFile = new File(logdir + "/logs/" + this.today + ".log");

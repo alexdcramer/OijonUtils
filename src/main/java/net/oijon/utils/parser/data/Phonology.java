@@ -121,6 +121,7 @@ public class Phonology {
 		return false;
 	}
 	
+	@Override
 	public String toString() {
 		String returnString = "===Phonology Start===\n";
 		returnString += "soundlist:";
@@ -134,6 +135,17 @@ public class Phonology {
 		returnString += this.phonoSystem.toString() + "\n";
 		returnString += "===Phonology End===";
 		return returnString;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Phonology) {
+			Phonology p = (Phonology) obj;
+			if (p.phonoList.equals(phonoList) & p.phonoSystem.equals(phonoSystem)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void clear() {
