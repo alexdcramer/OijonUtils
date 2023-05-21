@@ -289,6 +289,9 @@ class UnitTests {
 			log.info(newLang.toString());
 			assertEquals(testOrtho, newLang.getOrtho());
 			
+			assertEquals(testOrtho.phonoGuess("ough"), "ɔː");
+			assertEquals(testOrtho.orthoGuess("jutɪlz"), "yutylz");
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,11 +1,14 @@
 package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Orthography {
 
 	private Phonology ph = new Phonology();
 	private ArrayList<String[]> orthoList = new ArrayList<String[]>();
+	
+	// TODO: allow ortho rules to have exceptions
 	
 	/**
 	 * Creates an empty orthography
@@ -50,17 +53,17 @@ public class Orthography {
 		for (int i = 0; i < orthoList.size(); i++) {
 			String phonemes = orthoList.get(i)[0];
 			String ortho = orthoList.get(i)[1];
-			returnString.replace(phonemes, ortho);
+			returnString = returnString.replaceAll(phonemes, ortho);
 		}
 		return returnString;
 	}
 	
 	public String phonoGuess(String input) {
-		String returnString = input;
+		String returnString = new String(input);
 		for (int i = 0; i < orthoList.size(); i++) {
 			String phonemes = orthoList.get(i)[0];
 			String ortho = orthoList.get(i)[1];
-			returnString.replace(ortho, phonemes);
+			returnString = returnString.replaceAll(ortho, phonemes);
 		}
 		return returnString;
 	}
