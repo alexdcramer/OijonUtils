@@ -5,7 +5,7 @@
 	<groupId>net.oijon</groupId>
 	<artifactId>utils</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2.1-SNAPSHOT</version>
+	<version>1.2.1</version>
 	<name>Oijon Utils</name>
 	<description>Various utilities for oijon.net projects</description>
 	<url>https://oijon.net/utils</url>
