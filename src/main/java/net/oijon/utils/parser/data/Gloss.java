@@ -16,6 +16,15 @@ public class Gloss {
 	}
 	
 	/**
+	 * Copy constructor
+	 * @param gloss The gloss to copy
+	 */
+	public Gloss(Gloss gloss) {
+		this.abbreviation = gloss.abbreviation;
+		this.meaning = gloss.meaning;
+	}
+	
+	/**
 	 * Gets the abbreviation of the gloss
 	 * @return The abbreviation of the gloss
 	 */

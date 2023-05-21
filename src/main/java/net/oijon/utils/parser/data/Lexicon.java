@@ -2,7 +2,7 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
-//last edit: 2/11/23 -N3
+//last edit: 4/30/23 -N3
 
 /**
  * The words and meaning of a language
@@ -27,6 +27,16 @@ public class Lexicon {
 	public Lexicon(ArrayList<Word> words) {
 		for (int i = 0; i < words.size(); i++) {
 			this.addWord(words.get(i));
+		}
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param l The lexicon to copy
+	 */
+	public Lexicon(Lexicon l) {
+		for (int i = 0; i < l.wordList.size(); i++) {
+			this.addWord(l.getWord(i));
 		}
 	}
 	

@@ -45,6 +45,26 @@ public class Orthography {
 		}
 	}
 	
+	public String orthoGuess(String input) {
+		String returnString = input;
+		for (int i = 0; i < orthoList.size(); i++) {
+			String phonemes = orthoList.get(i)[0];
+			String ortho = orthoList.get(i)[1];
+			returnString.replace(phonemes, ortho);
+		}
+		return returnString;
+	}
+	
+	public String phonoGuess(String input) {
+		String returnString = input;
+		for (int i = 0; i < orthoList.size(); i++) {
+			String phonemes = orthoList.get(i)[0];
+			String ortho = orthoList.get(i)[1];
+			returnString.replace(ortho, phonemes);
+		}
+		return returnString;
+	}
+	
 	public String toString() {
 		sortOrthoList();
 		String returnString = "===Orthography Start===\n";
@@ -55,6 +75,14 @@ public class Orthography {
 		
 		
 		return returnString;
+	}
+	
+	/**
+	 * Gets the size of the Orthography
+	 * @return The amount of orthography pairs
+	 */
+	public int size() {
+		return orthoList.size();
 	}
 	
 	public boolean equals(Object obj) {

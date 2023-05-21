@@ -11,7 +11,7 @@ import java.util.Date;
 import net.oijon.utils.info.Info;
 import net.oijon.utils.parser.Parser;
 
-//last edit: 2/11/2023 -N3
+//last edit: 4/30/2023 -N3
 
 /**
  * Bundles all parts of a language together into one object

@@ -17,6 +17,15 @@ public class GlossList extends ArrayList<Gloss> {
 	}
 	
 	/**
+	 * Copy constructor
+	 * @param gl
+	 */
+	public GlossList(GlossList gl) {
+		super(gl);
+		this.name = gl.name;
+	}
+	
+	/**
 	 * Gets the name of the GlossList
 	 * @return The name of the GlossList
 	 */
