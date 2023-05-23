@@ -11,7 +11,7 @@ import java.util.Date;
 import net.oijon.utils.info.Info;
 import net.oijon.utils.parser.Parser;
 
-//last edit: 4/30/2023 -N3
+//last edit: 5/23/23 -N3
 
 /**
  * Bundles all parts of a language together into one object
@@ -110,9 +110,9 @@ public class Language {
 		autonym = l.autonym;
 		id = l.id;
 		name = l.name;
-		phono = l.phono; // !FIXME!
-		lexicon = l.lexicon; // !FIXME!
-		ortho = l.ortho; // !FIXME!
+		phono = new Phonology(l.phono); 
+		lexicon = new Lexicon(l.lexicon);
+		ortho = new Orthography(l.ortho);
 		parent = new Language(l.parent);
 		isReadOnly = l.isReadOnly;
 		created = new Date(l.created.toInstant().toEpochMilli());

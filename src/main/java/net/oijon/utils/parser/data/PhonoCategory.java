@@ -3,7 +3,7 @@ package net.oijon.utils.parser.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//last edit: 2/11/23 -N3
+//last edit: 5/23/23 -N3
 
 /**
  * Creates the equivalent of a row on the IPA chart.
@@ -99,6 +99,15 @@ public class PhonoCategory {
 	public PhonoCategory(String name) {
 		this.name = name;
 		this.sounds = new ArrayList<String>();
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param pc The PhonoCategory to be copied
+	 */
+	public PhonoCategory(PhonoCategory pc) {
+		this.name = pc.name;
+		this.sounds = new ArrayList<String>(pc.sounds);		
 	}
 	
 	/**

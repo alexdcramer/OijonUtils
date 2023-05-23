@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import net.oijon.utils.parser.Parser;
 
-//last edit: 12/22/22 -N3
+//last edit: 5/23/23 -N3
 
 public class PhonoSystem {
 
@@ -42,6 +42,16 @@ public class PhonoSystem {
 	 */
 	public PhonoSystem(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param ps The PhonoSystem to be copied
+	 */
+	public PhonoSystem(PhonoSystem ps) {
+		this.name = ps.name;
+		this.tables = new ArrayList<PhonoTable>(ps.tables);
+		this.diacriticList = new ArrayList<String>(ps.diacriticList);
 	}
 	
 	/**

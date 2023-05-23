@@ -3,6 +3,8 @@ package net.oijon.utils.parser.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//last edit: 5/23/23 -N3
+
 /**
  * Like an IPA table, but readable in Java
  * @author alex
@@ -46,6 +48,17 @@ public class PhonoTable {
 		this.columnNames = columnNames;
 		this.rows = rows;
 		this.soundsPerCell = soundsPerCell;
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param pt The PhonoTable to be copied
+	 */
+	public PhonoTable(PhonoTable pt) {
+		this.name = pt.name;
+		this.columnNames = new ArrayList<String>(pt.columnNames);
+		this.rows = new ArrayList<PhonoCategory>(pt.rows);
+		this.soundsPerCell = pt.soundsPerCell;
 	}
 	
 	/**

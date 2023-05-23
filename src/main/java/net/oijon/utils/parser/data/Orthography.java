@@ -2,6 +2,8 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
+//last edit: 5/23/23 -N3
+
 public class Orthography {
 
 	private Phonology ph = new Phonology();
@@ -16,8 +18,21 @@ public class Orthography {
 		
 	}
 	
+	/**
+	 * Creates an orthography with a set phonology
+	 * @param ph The phonology to be used
+	 */
 	public Orthography(Phonology ph) {
 		this.ph = ph;
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param o The orthography to copy
+	 */
+	public Orthography(Orthography o) {
+		this.ph = new Phonology(o.ph);
+		this.orthoList = new ArrayList<String[]>(o.orthoList);
 	}
 	
 	public void add(String phonemes, String ortho) {

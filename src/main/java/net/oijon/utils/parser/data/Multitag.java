@@ -2,6 +2,8 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
+//last edit: 5/23/23 -N3
+
 public class Multitag {
 
 	private String name;

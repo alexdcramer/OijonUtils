@@ -41,6 +41,15 @@ public class Tag {
 	}
 	
 	/**
+	 * Copy constructor
+	 * @param tag The tag to be copied
+	 */
+	public Tag(Tag tag) {
+		this.name = tag.name;
+		this.data = tag.data;
+	}
+	
+	/**
 	 * Gets the name of the tag
 	 * @return The name of the tag
 	 */

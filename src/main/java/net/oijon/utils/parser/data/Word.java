@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
-//last edit: 2/11/23 -N3
+//last edit: 5/23/23 -N3
 
 /**
  * Stores a word, including various properties about the word.
@@ -30,9 +30,25 @@ public class Word {
 	 * @param meaning What the word means
 	 */
 	public Word(String name, String meaning) {
-		this.name = name;
-		this.meaning = meaning;
+		this.name = new String(name);
+		this.meaning = new String(meaning);
 		//TODO: automatically get IPA from name via orthography
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param w The word to be copied
+	 */
+	public Word(Word w) {
+		this.name = new String(w.getName());
+		this.meaning = new String(w.getMeaning());
+		this.pronounciation = new String(w.getPronounciation());
+		this.etymology = new String(w.getEtymology());
+		this.sourceLanguage = new Language(w.getSourceLanguage());
+		this.classes = new ArrayList<String>(w.classes);
+		this.editDate = new Date(w.getEditDate().toInstant().toEpochMilli());
+		this.synonyms = new ArrayList<Word>(w.getSynonyms());
+		this.homonyms = new ArrayList<Word>(w.getHomonyms());
 	}
 	
 	/**
@@ -48,7 +64,7 @@ public class Word {
 	 * @param name The way the word is written
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.name = new String(name);
 	}
 	
 	/**
@@ -64,7 +80,7 @@ public class Word {
 	 * @param meaning The meaning of the word
 	 */
 	public void setMeaning(String meaning) {
-		this.meaning = meaning;
+		this.meaning = new String(meaning);
 	}
 	
 	/**
@@ -72,7 +88,7 @@ public class Word {
 	 * @param pronounciation The way the word is pronounced.
 	 */
 	public void setPronounciation(String pronounciation) {
-		this.pronounciation = pronounciation;
+		this.pronounciation = new String(pronounciation);
 	}
 	
 	/**
@@ -131,7 +147,7 @@ public class Word {
 	 * @param date The datetime a word was created.
 	 */
 	public void setCreationDate(Date date) {
-		this.creationDate = date;
+		this.creationDate = new Date(date.toInstant().toEpochMilli());
 	}
 	
 	/**

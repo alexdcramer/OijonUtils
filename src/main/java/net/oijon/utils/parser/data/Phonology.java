@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.oijon.utils.logger.Log;
 
-//last edit: 1/27/23 -N3
+//last edit: 5/23/23 -N3
 
 public class Phonology {
 
@@ -49,6 +49,15 @@ public class Phonology {
 	 */
 	public Phonology() {
 		setPhonoSystem(PhonoSystem.IPA);
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param p The phonology to be copied
+	 */
+	public Phonology(Phonology p) {
+		this.phonoList = p.phonoList; // don't like this, but list is an interface
+		this.phonoSystem = new PhonoSystem(p.phonoSystem);
 	}
 	
 	/**

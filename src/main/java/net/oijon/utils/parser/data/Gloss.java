@@ -1,5 +1,7 @@
 package net.oijon.utils.parser.data;
 
+//last edit: 5/23/23 -N3
+
 public class Gloss {
 
 	private String abbreviation;
