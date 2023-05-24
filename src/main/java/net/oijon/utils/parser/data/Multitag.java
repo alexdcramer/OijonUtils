@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 //last edit: 5/23/23 -N3
 
+/**
+ * A tag that can have child tags
+ * @author alex
+ *
+ */
 public class Multitag {
 
 	private String name;

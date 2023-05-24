@@ -8,8 +8,15 @@ import java.util.Arrays;
 
 import net.oijon.utils.parser.Parser;
 
-//last edit: 5/23/23 -N3
+//last edit: 5/24/23 -N3
 
+/**
+ * A way to transcribe all sounds allowed in a vocal tract. IPA is specified here as that
+ * is a standard for human sounds, however PhonoSystems can be created for non-human
+ * sounds as well.
+ * @author alex
+ *
+ */
 public class PhonoSystem {
 
 	private String name;

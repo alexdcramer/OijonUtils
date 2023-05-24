@@ -6,8 +6,13 @@ import java.util.List;
 
 import net.oijon.utils.logger.Log;
 
-//last edit: 5/23/23 -N3
+//last edit: 5/24/23 -N3
 
+/**
+ * The sounds of a language. Makes a list of sounds based off a PhonoSystem.
+ * @author alex
+ *
+ */
 public class Phonology {
 
 	private List<String> phonoList = new ArrayList<String>(Arrays.asList(" "));

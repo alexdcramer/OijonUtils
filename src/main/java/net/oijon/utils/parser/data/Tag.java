@@ -1,13 +1,12 @@
 package net.oijon.utils.parser.data;
 
+//last edit: 5/24/23 -N3
+
 /**
  * Stores a tag in a .language file
  * @author alex
  *
  */
-
-//last edit: 4/29/23 -N3
-
 public class Tag {
 	
 	static Tag NULL = new Tag("", "");

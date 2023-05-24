@@ -1,7 +1,14 @@
 package net.oijon.utils.parser.data;
 
-//last edit: 5/23/23 -N3
+//last edit: 5/24/23 -N3
 
+/**
+ * Attaches a meaning to a gloss abbreviation, allowing users to create their
+ * own, or see what a certain abbreviation means.
+ * 
+ * @author alex
+ *
+ */
 public class Gloss {
 
 	private String abbreviation;

@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 //last edit: 5/24/23 -N3
 
+/**
+ * The writing system of a language. Connects phonemes to graphemes, allowing
+ * a user to convert between phonetic transcription and standard writing system.
+ * @author alex
+ *
+ */
 public class Orthography {
 
 	private Phonology ph = new Phonology();
@@ -110,6 +116,14 @@ public class Orthography {
 	 */
 	public String[] getPair(int i) {
 		return orthoList.get(i);
+	}
+	
+	/**
+	 * Removes a pair from an orthography based on index
+	 * @param i The index of the pair to be removed
+	 */
+	public void remove(int i) {
+		orthoList.remove(i);
 	}
 	
 	public String toString() {

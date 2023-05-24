@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 //last edit: 5/23/23 -N3
 
+/**
+ * Creates a list of Gloss objects, which can be accessed all at once to create
+ * templates such as Leipzig.
+ * @author alex
+ *
+ */
 public class GlossList extends ArrayList<Gloss> {
 
 	private static final long serialVersionUID = 2940848265098898582L;
