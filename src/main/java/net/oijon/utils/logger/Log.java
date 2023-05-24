@@ -14,7 +14,7 @@ import java.util.Properties;
 import com.diogonunes.jcolor.AnsiFormat;
 import static com.diogonunes.jcolor.Attribute.*;
 
-//last edit: 2/11/2023 -N3
+//last edit: 5/24/2023 -N3
 
 
 
@@ -34,8 +34,8 @@ public class Log {
 	
 	AnsiFormat fDebug = new AnsiFormat(WHITE_TEXT());
 	AnsiFormat fInfo = new AnsiFormat(CYAN_TEXT());
-	AnsiFormat fWarn = new AnsiFormat(YELLOW_TEXT());
-	AnsiFormat fError = new AnsiFormat(RED_TEXT());
+	AnsiFormat fWarn = new AnsiFormat(BLACK_TEXT(), YELLOW_BACK());
+	AnsiFormat fError = new AnsiFormat(WHITE_TEXT(), RED_BACK());
 	AnsiFormat fCritical = new AnsiFormat(BOLD(), RED_TEXT(), YELLOW_BACK());
 	
 	/**

@@ -2,7 +2,7 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
-//last edit: 5/23/23 -N3
+//last edit: 5/24/23 -N3
 
 public class Orthography {
 
@@ -42,14 +42,25 @@ public class Orthography {
 		sortOrthoList();
 	}
 	
+	/**
+	 * Gets the phonology used
+	 * @return The phonology in question
+	 */
 	public Phonology getPhono() {
 		return ph;
 	}
 	
+	/**
+	 * Sets a new phonology for the orthography to use
+	 * @param p The new phonology to use
+	 */
 	public void setPhono(Phonology p) {
 		this.ph = p;
 	}
 	
+	/**
+	 * Sorts the list
+	 */
 	private void sortOrthoList() {
 		for (int i = 1; i < orthoList.size(); i++) {
 			if (orthoList.get(i)[1].length() > orthoList.get(i - 1)[1].length()) {
@@ -62,6 +73,11 @@ public class Orthography {
 		}
 	}
 	
+	/**
+	 * Guesses what the graphemes will be given phonemes
+	 * @param input The phonemes to use
+	 * @return A guess on graphemes
+	 */
 	public String orthoGuess(String input) {
 		String returnString = input;
 		for (int i = 0; i < orthoList.size(); i++) {
@@ -72,6 +88,11 @@ public class Orthography {
 		return returnString;
 	}
 	
+	/**
+	 * Guesses what the phonemes will be given graphemes
+	 * @param input The graphemes to use
+	 * @return A guess on phonemes
+	 */
 	public String phonoGuess(String input) {
 		String returnString = new String(input);
 		for (int i = 0; i < orthoList.size(); i++) {
@@ -80,6 +101,15 @@ public class Orthography {
 			returnString = returnString.replaceAll(ortho, phonemes);
 		}
 		return returnString;
+	}
+	
+	/**
+	 * Gets a pair, with 0 being the phonemes, and 1 being the graphemes
+	 * @param i The index of the pair in the orthography
+	 * @return The pair specified
+	 */
+	public String[] getPair(int i) {
+		return orthoList.get(i);
 	}
 	
 	public String toString() {
@@ -102,6 +132,7 @@ public class Orthography {
 		return orthoList.size();
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Orthography) {
 			Orthography o = (Orthography) obj;

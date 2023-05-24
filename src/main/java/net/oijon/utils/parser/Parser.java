@@ -19,7 +19,7 @@ import net.oijon.utils.parser.data.Phonology;
 import net.oijon.utils.parser.data.Tag;
 import net.oijon.utils.parser.data.Word;
 
-//last edit: 2/11/2023 -N3
+//last edit: 5/24/2023 -N3
 
 /**
  * Parses a .language file, and allows various parts to be accessed
@@ -330,7 +330,8 @@ public class Parser {
 						Tag editDateTag = wordTag.getDirectChild("editDate");
 						word.setEditDate(new Date(Long.parseLong(editDateTag.value())));
 					} catch (Exception e) {
-						log.warn("Could not find optional property for " + valueTag.value() + ". Was this word added manually?");
+						log.warn("Could not find optional property for " + valueTag.value() + 
+								" (" + valueTag.getName() + "). Was this word added manually?");
 					}
 					lexicon.addWord(word);
 				}
