@@ -133,19 +133,7 @@ public class Log {
 	 */
 	public void debug(String input) {
 		if (debug) {
-			setNow();
-			String output = "[DEBUG]    [" + this.now + "] - " + input;
-			System.out.println(fDebug.format(output));
-			try {
-				FileWriter fw = new FileWriter(file, true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				bw.write(output);
-				bw.newLine();
-			    bw.close();
-			} catch (IOException e) {
-				this.err(e.toString());
-				e.printStackTrace();
-			}
+			log("DEBUG", input, fDebug);
 		}
 	}
 	
@@ -154,20 +142,7 @@ public class Log {
 	 * @param input What is to be printed
 	 */
 	public void info(String input) {
-		setNow();
-		String output = "[INFO]     [" + this.now + "] - " + input;
-		System.out.println(fInfo.format(output));
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-			bw.newLine();
-		    bw.close();
-		} catch (IOException e) {
-			this.err(e.toString());
-			e.printStackTrace();
-		}
-	    
+		log("INFO", input, fInfo);
 	}
 	
 	/**
@@ -175,20 +150,7 @@ public class Log {
 	 * @param input What is to be printed
 	 */
 	public void warn(String input) {
-		setNow();
-		String output = "[WARN]     [" + this.now + "] - " + input;
-		System.out.println(fWarn.format(output));
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-			bw.newLine();
-		    bw.close();
-		} catch (IOException e) {
-			this.err(e.toString());
-			e.printStackTrace();
-		}
-	    
+		log("WARN", input, fWarn);
 	}
 	
 	/**
@@ -196,19 +158,7 @@ public class Log {
 	 * @param input What is to be printed
 	 */
 	public void err(String input) {
-		setNow();
-		String output = "[ERROR]    [" + this.now + "] - " + input;
-		System.out.println(fError.format(output));
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-			bw.newLine();
-		    bw.close();
-		} catch (IOException e) {
-			this.err(e.toString()); // this might be a very bad idea
-			e.printStackTrace();
-		}
+		log("ERROR", input, fError);
 	    
 	}
 	/**
@@ -216,20 +166,7 @@ public class Log {
 	 * @param input What is to be printed
 	 */
 	public void critical(String input) {
-		setNow();
-		String output = "[CRITICAL] [" + this.now + "] - " + input;
-		System.out.println(fCritical.format(output));
-		try {
-			FileWriter fw = new FileWriter(file, true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-			bw.newLine();
-		    bw.close();
-		} catch (IOException e) {
-			// if this catch is being hit, something has gone horribly wrong
-			this.err(e.toString());
-			e.printStackTrace();
-		}
+		log("CRITICAL", input, fCritical);
 	}
 	
 	/**
@@ -250,6 +187,30 @@ public class Log {
 	
 	public void setDebug(boolean bool) {
 		debug = bool;
+	}
+	
+	/**
+	 * Prints out to a file and to console given a prefix and color
+	 * @param prefix The prefix of the line to print, for example [INFO]
+	 * @param input The message to print
+	 * @param color The color to print in the console
+	 */
+	private void log(String prefix, String input, AnsiFormat color) {
+		setNow();
+		String output = String.format("%-10s", "[" + prefix + "]") + 
+				" [" + this.now + "] - " + input;
+		System.out.println(color.format(output));
+		try {
+			FileWriter fw = new FileWriter(file, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(output);
+			bw.newLine();
+		    bw.close();
+		} catch (IOException e) {
+			// if this catch is being hit, something has gone horribly wrong
+			this.err(e.toString());
+			e.printStackTrace();
+		}
 	}
 	
 	/**
