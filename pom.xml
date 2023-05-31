@@ -9,14 +9,12 @@
 	<name>Oijon Utils</name>
 	<description>Various utilities for oijon.net projects</description>
 	<url>https://oijon.net/utils</url>
-	
 	<scm>
 		<connection>scm:git:git@github.com/alexdcramer/OijonUtils.git</connection>
 		<developerConnection>scm:git:git@github.com:alexdcramer/OijonUtils.git</developerConnection>
 		<url>git@github.com/alexdcramer/OijonUtils/tree/main</url>
 		<tag>v1.2.3</tag>
 	</scm>
-	
 	<properties>
 		<jdk.version>11</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,10 +30,10 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.9.3</version>
-		    <scope>test</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.3</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<distributionManagement>
@@ -134,6 +132,13 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+							<passphraseServerId>${gpg.keyname}</passphraseServerId>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
