@@ -19,7 +19,7 @@ import net.oijon.utils.parser.data.Phonology;
 import net.oijon.utils.parser.data.Tag;
 import net.oijon.utils.parser.data.Word;
 
-//last edit: 5/24/2023 -N3
+//last edit: 6/25/2023 -N3
 
 /**
  * Parses a .language file, and allows various parts to be accessed

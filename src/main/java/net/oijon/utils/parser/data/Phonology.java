@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.oijon.utils.logger.Log;
 
-//last edit: 5/24/23 -N3
+//last edit: 6/25/23 -N3
 
 /**
  * The sounds of a language. Makes a list of sounds based off a PhonoSystem.
@@ -43,7 +43,7 @@ public class Phonology {
 		for (int i = 0; i < array.length; i++) {
 			if (phonoSystem.isIn(array[i])) {
 				phonoList.add(array[i]);
-			} else {
+			} else if (!array[i].equals(" ")) {
 				log.warn(array[i] + " is not in PhonoSystem " + sys.getName());
 			}
 		}
