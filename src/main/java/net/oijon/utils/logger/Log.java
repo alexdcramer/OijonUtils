@@ -128,6 +128,14 @@ public class Log {
 	*/
 	
 	/**
+	 * Logs console input to the log
+	 * @param input The raw input
+	 */
+	public void input(String input) {
+		write(">" + input);
+	}
+	
+	/**
 	 * Prints a debug line
 	 * @param input What is to be printed
 	 */
@@ -200,10 +208,14 @@ public class Log {
 		String output = String.format("%-10s", "[" + prefix + "]") + 
 				" [" + this.now + "] - " + input;
 		System.out.println(color.format(output));
+		write(output);
+	}
+	
+	private void write(String input) {
 		try {
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
+			bw.write(input);
 			bw.newLine();
 		    bw.close();
 		} catch (IOException e) {
@@ -212,7 +224,6 @@ public class Log {
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * Currently does not do anything, as the temp file does not actually control the file used anymore
 	 * @deprecated As of Oijon Utils v1.1.2, as the way file selection is handled has changed. Please use the true/false flag on log creation instead.

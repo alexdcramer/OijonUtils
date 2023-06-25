@@ -299,4 +299,30 @@ class UnitTests {
 		}
 		log.info("====END ORTHOGRAPHY TEST====");
 	}
+	
+	@Test
+	void testNullIDCatch() {
+		try {
+			Parser parser = new Parser(Paths.get(UnitTests.class.getClassLoader().getResource("testish.language").toURI()).toFile());
+			Language testLang = parser.parseLanguage();
+			
+			log.debug("Old ID: " + testLang.getID());
+			assertFalse(testLang.getID().equals("null"));
+			
+			testLang.setID("null");
+			log.debug("Null ID: " + testLang.getID());
+			assertTrue(testLang.getID().equals("null"));
+			
+			testLang.toFile(new File(System.getProperty("user.home") + "/OijonUtils/testish2.language"));
+			
+			Parser newparser = new Parser(new File(System.getProperty("user.home") + "/OijonUtils/testish2.language"));
+			Language testLang2 = newparser.parseLanguage();
+			
+			log.debug("New ID: " + testLang2.getID());
+			assertFalse(testLang2.getID().equals("null"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 }

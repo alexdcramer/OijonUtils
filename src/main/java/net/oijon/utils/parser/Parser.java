@@ -263,10 +263,16 @@ public class Parser {
 		Tag id = new Tag("id");
 		try {
 			id = meta.getDirectChild("id");
-			if (!id.value().isBlank()) {
+			if (!id.value().isBlank() & !id.value().equals("null")) {
 				log.info("ID of language is " + id.value());
+				lang.setID(id.value());
+			} else {
+				log.err("This language appears to have a blank or null ID!");
+				log.warn("Generating new ID, this may break relations with other languages!");
+				lang.generateID();
+				log.warn("New ID: " + lang.getID() + ". If other languages are related to this language, "
+						+ "a manual switch to the new ID will be neccessary.");
 			}
-			lang.setID(id.value());
 		} catch (Exception e) {
 			log.warn("This language appears to have been created with a very early version of Oijon Utils!");
 			log.warn("The id tag was required as of 1.2.0.");
