@@ -63,7 +63,6 @@ public class Parser {
 				wholeFile += scanner.nextLine() + "\n";
 			}
 			String[] splitLines = wholeFile.split("\n");
-			log.debug(wholeFile);
 			if (splitLines[0].equals("===PHOSYS Start===")) {
 				parseMulti(wholeFile);
 			} else {
@@ -110,7 +109,6 @@ public class Parser {
 							tagInput += splitLines[j] + "\n";
 						} else if (splitLines[j].equals("===" + name + " End===")){
 							Multitag childTag = parseMulti(tagInput);
-							log.debug("Adding child multitag " + name + " to tag " + tag.getName());
 							tag.addMultitag(childTag);
 							i = j;
 							break;
@@ -123,7 +121,6 @@ public class Parser {
 			} else if (splitColon.length == 2) {
 				String name = splitColon[0];
 				String data = splitColon[1];
-				log.debug("Adding child tag " + name + " with data " + data + " to tag " + tag.getName());
 				Tag childTag = new Tag(name, data);
 				tag.addTag(childTag);
 			} else if (splitLines[i] != "") {
@@ -163,8 +160,6 @@ public class Parser {
 					Tag soundsPerCell = phonoTableTag.getDirectChild("soundsPerCell");
 					Tag rowNames = phonoTableTag.getDirectChild("rowNames");
 					ArrayList<Tag> tableData = phonoTableTag.getUnattachedData();
-					log.debug("Data for table " + tableName.value() + ":");
-					log.debug(tableData.toString());
 					
 					String name = tableName.value();
 					ArrayList<String> columns = new ArrayList<String>(Arrays.asList(columnNames.value().split(",")));
@@ -298,7 +293,6 @@ public class Parser {
 			ArrayList<Tag> orthoPairs = orthoTag.getSubtags();
 			for (int i = 0; i < orthoPairs.size(); i++) {
 				ortho.add(orthoPairs.get(i).getName(), orthoPairs.get(i).value());
-				log.debug("Added pair " + orthoPairs.get(i).getName() + ":" + orthoPairs.get(i).value());
 			}
 			return ortho;
 		} catch (Exception e) {
