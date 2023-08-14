@@ -41,6 +41,11 @@ public class Orthography {
 		this.orthoList = new ArrayList<String[]>(o.orthoList);
 	}
 	
+	/**
+	 * Adds a pair to the orthography
+	 * @param phonemes The phonemes to use
+	 * @param ortho The graphemes to use
+	 */
 	public void add(String phonemes, String ortho) {
 		// TODO: check if phonemes are actually in phonology
 		String[] valueArray = {phonemes, ortho};
@@ -70,8 +75,8 @@ public class Orthography {
 	private void sortOrthoList() {
 		for (int i = 1; i < orthoList.size(); i++) {
 			if (orthoList.get(i)[1].length() > orthoList.get(i - 1)[1].length()) {
-				String[] tempval1 = orthoList.get(i);
-				String[] tempval2 = orthoList.get(i - 1);
+				String[] tempval1 = {orthoList.get(i)[0], orthoList.get(i)[1]};
+				String[] tempval2 = {orthoList.get(i - 1)[0], orthoList.get(i - 1)[1]};
 				orthoList.set(i, tempval2);
 				orthoList.set(i - 1, tempval1);
 				sortOrthoList();

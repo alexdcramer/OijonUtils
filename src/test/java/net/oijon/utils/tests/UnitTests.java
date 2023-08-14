@@ -325,4 +325,31 @@ class UnitTests {
 			fail();
 		}
 	}
+	
+	@Test
+	void testOrthoWithApostrophe() {
+		try {
+			Parser parser = new Parser(Paths.get(UnitTests.class.getClassLoader().getResource("testish.language").toURI()).toFile());
+			Language testLang = parser.parseLanguage();
+			Orthography testOrtho = testLang.getOrtho();
+			testOrtho.add("m", "m");
+			testOrtho.add("n", "n");
+			testOrtho.add("ŋ", "ń");
+			testOrtho.add("mʲ", "m'");
+			testOrtho.add("nʲ", "n'");
+			testOrtho.add("ŋʲ", "ń'");
+			
+			testLang.toFile(new File(System.getProperty("user.home") + "/OijonUtils/testish-orthoapostrophe.language"));
+			Parser newparser = new Parser(new File(System.getProperty("user.home") + "/OijonUtils/testish-orthoapostrophe.language"));
+			Language testLang2 = newparser.parseLanguage();
+			Orthography testOrtho2 = testLang2.getOrtho();
+			
+			assertEquals(testOrtho2.orthoGuess("ŋʲmnʲnmʲŋ"), "ń'mn'nm'ń");
+			assertEquals(testOrtho2.phonoGuess("ń'mn'nm'ń"), "ŋʲmnʲnmʲŋ");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 }
