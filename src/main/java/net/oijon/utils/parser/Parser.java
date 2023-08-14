@@ -36,6 +36,7 @@ public class Parser {
 	 * @param input The string to be parsed.
 	 */
 	public Parser(String input) {
+		log.setDebug(true);
 		input.replace("	", "");
 		String[] splitLines = input.split("\n");
 		/**
@@ -83,109 +84,49 @@ public class Parser {
 		return this.tag;
 	}
 	
-	private String parseMultiName(String line) {
-		String[] splitSpace = line.split(" ");
-		String tagName = splitSpace[0].substring(3);
-		return tagName;
-	}
-	
-	private Tag parseTag(String line) {
-		String[] splitColon = line.split(":");
-		String name = splitColon[0];
-		String data = splitColon[1];
-		Tag tag = new Tag(name, data);
-		return tag;
-	}
-	
-	private Tag parseNamelessTag(String data) {
-		Tag tag = new Tag("", data);
-		return tag;
-	}
-	
-	private Multitag getParentTag(String firstLine) {
-		Multitag tag = new Multitag(parseMultiName(firstLine));
-		return tag;
-	}
-	
-	private int getLineStatus(String line) {
-		// Returned numbers represent the type of line read
-		
-		// -1 - null line
-		// 0 - nameless tag
-		// 1 - tag w/ name
-		// 2 - multitag start
-		// 3 - multitag end
-		
-		String[] splitSpace = line.split(" ");
-		String[] splitColon = line.split(":");
-		if (splitSpace.length == 2 & splitColon.length != 2) {
-			if (splitSpace[1].equals("Start===")) {
-				return 2;
-			}
-			if (splitSpace[1].equals("End===")) {
-				return 3;
-			}
-		} else if (splitColon.length == 2) {
-			return 1;
-		} else if (line != "") {
-			return 0;
-		}
-		return -1;
-	}
-	
 	/**
 	 * Parses a multitag from a .language structured string
 	 * @param input The .language structured string to be read
 	 * @return A multitag object with all data inside.
 	 */
 	private Multitag parseMulti(String input) {
-		// removes tabs from input data (yes, that is a tab and not a space, Eclipse is a bit silly)
 		input = input.replace("	", "");
-		
 		String[] splitLines = input.split("\n");
-		Multitag tag = getParentTag(splitLines[0]);
+		String[] splitSpace = splitLines[0].split(" ");
+		String tagName = splitSpace[0].substring(3);
 		
-		// goes through the rest of the file, starting at the line after the PHOSYS start tag
-		// (the PHOSYS start tag has already been read)
-		
-		boolean separatingMulti = false;
-		int startLine = 0;
-		int endLine = 0;
-		int activeTags = 0;
-		
+		Multitag tag = new Multitag(tagName);
 		for (int i = 1; i < splitLines.length; i++) {
-			
-			int lineStatus = getLineStatus(splitLines[i]);
-			if (lineStatus == 0 & activeTags == 0) {
-				// TODO: check if this is *ever* used in current PHOSYS files
-				// AFAIK, the only files using this method are from before Utils was separate...
-				tag.addTag(parseNamelessTag(splitLines[i]));
-			} else if (lineStatus == 1 & activeTags == 0) {
-				tag.addTag(parseTag(splitLines[i]));
-			} else if (lineStatus == 2) {
-				if (!separatingMulti) {
-					activeTags++;
-					separatingMulti = true;
-					// line num - 1, num in array
-					startLine = i;
-				} else {
-					activeTags++;
-				}
-				
-			} else if (lineStatus == 3) {
-				activeTags--;
-				if (activeTags == 0) {
-					endLine = i;
-					String rawMultiTag = "";
-					// takes the multitag, and packages it together to be parsed
-					// uses <= to include the end line
-					for (int j = startLine; j <= endLine; j++) {
-						rawMultiTag += splitLines[j] + "\n";
+			splitSpace = splitLines[i].split(" ");
+			String[] splitColon = splitLines[i].split(":");
+			if (splitSpace.length == 2 & splitColon.length != 2) {
+				if (splitSpace[1].equals("Start===")) {
+					String name = splitSpace[0].substring(3);
+					int lineNum = i + 1;
+					String tagInput = "";
+					for (int j = i; j < splitLines.length; j++) {
+						if (!splitLines[j].equals("===" + name + " End===")) {
+							tagInput += splitLines[j] + "\n";
+						} else if (splitLines[j].equals("===" + name + " End===")){
+							Multitag childTag = parseMulti(tagInput);
+							tag.addMultitag(childTag);
+							i = j;
+							break;
+						}
+						if (j == splitLines.length - 1) {
+							log.err("Tag " + name + " on line " + lineNum + " is not closed!");
+						}
 					}
-					tag.addMultitag(parseMulti(rawMultiTag));
 				}
-			} else {
-				log.debug("Skipping line " + (i + 1) + " until its parent multitag is handled");
+			} else if (splitColon.length == 2) {
+				String name = splitColon[0];
+				String data = splitColon[1];
+				Tag childTag = new Tag(name, data);
+				tag.addTag(childTag);
+			} else if (splitLines[i] != "") {
+				String data = splitLines[i];
+				Tag childTag = new Tag("", data);
+				tag.addTag(childTag);
 			}
 		}
 		this.tag = tag;

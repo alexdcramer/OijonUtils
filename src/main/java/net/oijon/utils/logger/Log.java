@@ -14,7 +14,7 @@ import java.util.Properties;
 import com.diogonunes.jcolor.AnsiFormat;
 import static com.diogonunes.jcolor.Attribute.*;
 
-//last edit: 8/14/2023 -N3
+//last edit: 5/24/2023 -N3
 
 
 
@@ -211,10 +211,6 @@ public class Log {
 		write(output);
 	}
 	
-	/**
-	 * Writes a string to the log file
-	 * @param input The string to be written into the log file
-	 */
 	private void write(String input) {
 		try {
 			FileWriter fw = new FileWriter(file, true);

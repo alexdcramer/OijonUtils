@@ -1,6 +1,6 @@
 package net.oijon.utils.info;
 
-//last edit: 6/26/23 -N3
+//last edit: 6/25/23 -N3
 
 /**
  * A class to get the version information of the current build
@@ -9,7 +9,7 @@ package net.oijon.utils.info;
  */
 public class Info {
 
-	private static String versionNum = "1.2.5-SNAPSHOT";
+	private static String versionNum = "1.2.4";
 	private static String fullVersion = "Oijon Utils - v" + versionNum;
 	
 	/**

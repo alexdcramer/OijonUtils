@@ -92,12 +92,6 @@ public class Multitag {
 	public void addMultitag(Multitag tag) {
 		subMultitags.add(tag);
 	}
-	
-	public void addSeveralMultitags(Multitag[] tags) {
-		for (int i = 0; i < tags.length; i++) {
-			subMultitags.add(tags[i]);
-		}
-	}
 	/**
 	 * Checks if two multitags are the same type
 	 * @param tag The multitag to check
