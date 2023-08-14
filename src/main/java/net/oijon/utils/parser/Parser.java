@@ -88,48 +88,86 @@ public class Parser {
 	 * Parses a multitag from a .language structured string
 	 * @param input The .language structured string to be read
 	 * @return A multitag object with all data inside.
+	 * 
+	 * A warning to whoever dares edit this: This code, when edited just slightly,
+	 * likes to break in unpredictable ways. It is the definition of spaghetti code.
+	 * As such, every line has been commented to explain what it does.
 	 */
 	private Multitag parseMulti(String input) {
+		// Removes tabs from input. Planned addition, but never added...
 		input = input.replace("	", "");
+		// Splits each line based off line breaks
 		String[] splitLines = input.split("\n");
+		// Breaks the first line by space. This should be a multitag start tag
 		String[] splitSpace = splitLines[0].split(" ");
+		// Gets the tag name from the start tag. This removes the beginning '==='
 		String tagName = splitSpace[0].substring(3);
 		
+		// This creates a new Multitag in memory named after the tag just named
 		Multitag tag = new Multitag(tagName);
+		// Loop over each line in file
 		for (int i = 1; i < splitLines.length; i++) {
+			// Split each line by space
 			splitSpace = splitLines[i].split(" ");
+			// Split each line by colon
 			String[] splitColon = splitLines[i].split(":");
+			// Checks if the line matches the pattern of a multitag marker
 			if (splitSpace.length == 2 & splitColon.length != 2) {
+				// Checks if said line is a start marker
 				if (splitSpace[1].equals("Start===")) {
+					// Gets the name of the start marker
 					String name = splitSpace[0].substring(3);
+					// Gets the line number the tag was found on
 					int lineNum = i + 1;
+					// Creates a variable for the loop below
 					String tagInput = "";
+					// Loops over the lines in the file, starting at the start marker
 					for (int j = i; j < splitLines.length; j++) {
+						// Checks if a line is not an end marker
 						if (!splitLines[j].equals("===" + name + " End===")) {
+							// Adds line to tagInput if it is not an end marker
 							tagInput += splitLines[j] + "\n";
+						// Checks if a line is an end marker
 						} else if (splitLines[j].equals("===" + name + " End===")){
+							// Starts parsing tagInput
 							Multitag childTag = parseMulti(tagInput);
+							// Adds the parsed multitag to the current tag
 							tag.addMultitag(childTag);
+							// skips to the end of the multitag
 							i = j;
+							// breaks the loop that reads into the multitag
 							break;
 						}
+						// Checks if at the end of the file
 						if (j == splitLines.length - 1) {
+							// Logs if at end of file and close has not been found
 							log.err("Tag " + name + " on line " + lineNum + " is not closed!");
 						}
 					}
 				}
+			// Checks if line is named tag
 			} else if (splitColon.length == 2) {
+				// Extracts the name of the tag
 				String name = splitColon[0];
+				// Extracts the data of the tag
 				String data = splitColon[1];
+				// Creates a tag object in memory
 				Tag childTag = new Tag(name, data);
+				// Adds tag object to parent
 				tag.addTag(childTag);
+			// Checks if line is nameless (weird)
 			} else if (splitLines[i] != "") {
+				// Sets the data of the tag as the full line
 				String data = splitLines[i];
+				// Creates a tag with no name in memory
 				Tag childTag = new Tag("", data);
+				// Adds tag object to parent
 				tag.addTag(childTag);
 			}
 		}
+		// Not sure what this is doing, probably setting parent for future multitags?
 		this.tag = tag;
+		// Returns the parsed multitag
 		return tag;
 	}
 	
