@@ -19,7 +19,7 @@ import net.oijon.utils.parser.data.Phonology;
 import net.oijon.utils.parser.data.Tag;
 import net.oijon.utils.parser.data.Word;
 
-//last edit: 6/25/2023 -N3
+//last edit: 8/14/2023 -N3
 
 /**
  * Parses a .language file, and allows various parts to be accessed
@@ -85,6 +85,114 @@ public class Parser {
 	}
 	
 	/**
+	 * Checks if a line contains a multitag marker
+	 * @param line The line to be checked
+	 * @return true if the line is a multitag marker, false otherwise
+	 */
+	private boolean isMultitagMarker(String line) {
+		String[] splitSpace = line.split(" ");
+		String[] splitColon = line.split(":");
+		if (splitSpace.length == 2 & splitColon.length != 2) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if a line contains a starting multitag marker
+	 * @param line The line to be checked
+	 * @return true if the line is a starting multitag marker, false otherwise
+	 */
+	private boolean isMultitagStart(String line) {
+		String[] splitSpace = line.split(" ");
+		if (isMultitagMarker(line)) {
+			if (splitSpace[1].equals("Start===")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if a line contains an ending multitag marker
+	 * @param line The line to be checked
+	 * @return true if the line is an ending multitag marker, false otherwise
+	 */
+	private boolean isMultitagEnd(String line) {
+		String[] splitSpace = line.split(" ");
+		if (isMultitagMarker(line)) {
+			if (splitSpace[1].equals("End===")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the name of a multitag from its marker
+	 * @param line The line with the marker in it
+	 * @return The name of the given multitag
+	 */
+	private String getMarkerTagName(String line) {
+		if (isMultitagMarker(line)) {
+			String[] splitSpace = line.split(" ");
+			String name = splitSpace[0].substring(3);
+			return name;
+		} else {
+			return "";
+		}
+	}
+	
+	/**
+	 * Checks if a closing tag is the correct tag for a given tag name
+	 * @param line The line to check for a closing tag
+	 * @param name The name of the expected closing tag
+	 * @return true if line is the expected closing tag, false if either not a closing tag or a closing tag for a different multitag
+	 */
+	private boolean isCloseForName(String line, String name) {
+		if (isMultitagEnd(line)) {
+			if (getMarkerTagName(line).equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if the line provided is representative of a Tag object
+	 * @param line The line to check
+	 * @return true if is in the format of a Tag in string form, false otherwise
+	 */
+	private boolean isDataTag(String line) {
+		String[] splitColon = line.split(":");
+		if (splitColon.length == 2) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Parses a single tag from a line.
+	 * @param line The line of the file to parse from
+	 * @return A Tag object that the line represents
+	 */
+	private Tag parseSingle(String line) {
+		if (isDataTag(line)) {
+			String[] splitColon = line.split(":");
+			// Extracts the name of the tag
+			String name = splitColon[0];
+			// Extracts the data of the tag
+			String data = splitColon[1];
+			// Creates a tag object in memory
+			Tag childTag = new Tag(name, data);
+			// Adds tag object to parent
+			return childTag;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Parses a multitag from a .language structured string
 	 * @param input The .language structured string to be read
 	 * @return A multitag object with all data inside.
@@ -98,25 +206,19 @@ public class Parser {
 		input = input.replace("	", "");
 		// Splits each line based off line breaks
 		String[] splitLines = input.split("\n");
-		// Breaks the first line by space. This should be a multitag start tag
-		String[] splitSpace = splitLines[0].split(" ");
 		// Gets the tag name from the start tag. This removes the beginning '==='
-		String tagName = splitSpace[0].substring(3);
+		String tagName = getMarkerTagName(splitLines[0]);
 		
 		// This creates a new Multitag in memory named after the tag just named
 		Multitag tag = new Multitag(tagName);
 		// Loop over each line in file
 		for (int i = 1; i < splitLines.length; i++) {
-			// Split each line by space
-			splitSpace = splitLines[i].split(" ");
-			// Split each line by colon
-			String[] splitColon = splitLines[i].split(":");
 			// Checks if the line matches the pattern of a multitag marker
-			if (splitSpace.length == 2 & splitColon.length != 2) {
+			if (isMultitagMarker(splitLines[i])) {
 				// Checks if said line is a start marker
-				if (splitSpace[1].equals("Start===")) {
+				if (isMultitagStart(splitLines[i])) {
 					// Gets the name of the start marker
-					String name = splitSpace[0].substring(3);
+					String name = getMarkerTagName(splitLines[i]);
 					// Gets the line number the tag was found on
 					int lineNum = i + 1;
 					// Creates a variable for the loop below
@@ -124,11 +226,11 @@ public class Parser {
 					// Loops over the lines in the file, starting at the start marker
 					for (int j = i; j < splitLines.length; j++) {
 						// Checks if a line is not an end marker
-						if (!splitLines[j].equals("===" + name + " End===")) {
+						if (!isCloseForName(splitLines[j], name)) {
 							// Adds line to tagInput if it is not an end marker
 							tagInput += splitLines[j] + "\n";
 						// Checks if a line is an end marker
-						} else if (splitLines[j].equals("===" + name + " End===")){
+						} else if (isCloseForName(splitLines[j], name)){
 							// Starts parsing tagInput
 							Multitag childTag = parseMulti(tagInput);
 							// Adds the parsed multitag to the current tag
@@ -146,21 +248,13 @@ public class Parser {
 					}
 				}
 			// Checks if line is named tag
-			} else if (splitColon.length == 2) {
-				// Extracts the name of the tag
-				String name = splitColon[0];
-				// Extracts the data of the tag
-				String data = splitColon[1];
-				// Creates a tag object in memory
-				Tag childTag = new Tag(name, data);
+			} else if (isDataTag(splitLines[i])) {
 				// Adds tag object to parent
-				tag.addTag(childTag);
+				tag.addTag(parseSingle(splitLines[i]));
 			// Checks if line is nameless (weird)
 			} else if (splitLines[i] != "") {
-				// Sets the data of the tag as the full line
-				String data = splitLines[i];
 				// Creates a tag with no name in memory
-				Tag childTag = new Tag("", data);
+				Tag childTag = new Tag("", splitLines[i]);
 				// Adds tag object to parent
 				tag.addTag(childTag);
 			}
