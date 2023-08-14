@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.oijon.utils.logger.Log;
+import net.oijon.utils.parser.Parser;
 
-//last edit: 6/25/23 -N3
+//last edit: 8/14/23 -N3
 
 /**
  * The sounds of a language. Makes a list of sounds based off a PhonoSystem.
@@ -17,7 +18,7 @@ public class Phonology {
 
 	private List<String> phonoList = new ArrayList<String>(Arrays.asList(" "));
 	private PhonoSystem phonoSystem;
-	Log log = new Log(System.getProperty("user.home") + "/.oijonUtils", true);
+	static Log log = Parser.getLog();
 	
 	/**
 	 * Converts a string array of sounds into a phonology
@@ -118,6 +119,23 @@ public class Phonology {
 			if (value.equals(phonoList.get(i))) {
 				phonoList.remove(i);
 			}
+		}
+	}
+	
+	public static Phonology parse(Multitag docTag) throws Exception {
+		try {
+			PhonoSystem phonoSystem = PhonoSystem.parse(docTag);
+			Multitag phonoTag = docTag.getMultitag("Phonology");
+			Tag soundListTag = phonoTag.getDirectChild("soundlist");
+			String soundData = soundListTag.value();
+			String[] soundList = soundData.split(",");
+			// TODO: parse phonotactics
+			Phonology phono = new Phonology(soundList, phonoSystem);
+			return phono;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.err(e.toString());
+			throw e;
 		}
 	}
 	

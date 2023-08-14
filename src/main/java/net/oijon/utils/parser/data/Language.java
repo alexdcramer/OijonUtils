@@ -9,9 +9,10 @@ import java.time.Instant;
 import java.util.Date;
 
 import net.oijon.utils.info.Info;
+import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.Parser;
 
-//last edit: 5/23/23 -N3
+//last edit: 8/14/23 -N3
 
 /**
  * Bundles all parts of a language together into one object
@@ -20,6 +21,7 @@ import net.oijon.utils.parser.Parser;
  */
 public class Language {
 
+	public static Log log = Parser.getLog();
 	public static final Language NULL = new Language("null");
 	private String autonym = "null";
 	private String id = "null";
@@ -119,6 +121,66 @@ public class Language {
 		// current time
 		edited = new Date(System.currentTimeMillis());
 		versionEdited = Info.getVersion();
+	}
+	
+	
+	public static Language parse(Multitag docTag) throws Exception {
+		Phonology phono = Phonology.parse(docTag);
+		Lexicon lexicon = Lexicon.parse(docTag);
+		Orthography ortho = Orthography.parse(docTag);
+		Multitag meta = docTag.getMultitag("Meta");
+		Tag ver = new Tag("utilsVersion");
+		try {
+			ver = meta.getDirectChild("utilsVersion");
+			if (!ver.value().isBlank()) {
+				log.info("Language created with " + ver.value());
+			}
+		} catch (Exception e) {
+			ver = meta.getDirectChild("susquehannaVersion");
+			if (!ver.value().isBlank()) {
+				log.info("Language created with " + ver.value());
+			}
+			log.warn("This language appears to have been created with a very early version of Oijon Utils!");
+			log.warn("The susquehannaVersion tag was deprecated as of 1.2.0.");
+		}
+		
+		Tag timeCreated = meta.getDirectChild("timeCreated");
+		Tag lastEdited = meta.getDirectChild("lastEdited");
+		Tag readonly = meta.getDirectChild("readonly");
+		Tag name = meta.getDirectChild("name");
+		Tag autonym = meta.getDirectChild("autonym");
+		Tag parent = meta.getDirectChild("parent");
+		Language lang = new Language(name.value());
+		
+		Tag id = new Tag("id");
+		try {
+			id = meta.getDirectChild("id");
+			if (!id.value().isBlank() & !id.value().equals("null")) {
+				log.info("ID of language is " + id.value());
+				lang.setID(id.value());
+			} else {
+				log.err("This language appears to have a blank or null ID!");
+				log.warn("Generating new ID, this may break relations with other languages!");
+				lang.generateID();
+				log.warn("New ID: " + lang.getID() + ". If other languages are related to this language, "
+						+ "a manual switch to the new ID will be neccessary.");
+			}
+		} catch (Exception e) {
+			log.warn("This language appears to have been created with a very early version of Oijon Utils!");
+			log.warn("The id tag was required as of 1.2.0.");
+			lang.generateID();
+		}
+		
+		lang.setPhono(phono);
+		lang.setOrtho(ortho);
+		lang.setLexicon(lexicon);
+		lang.setCreated(new Date(Long.parseLong(timeCreated.value())));
+		lang.setEdited(new Date(Long.parseLong(lastEdited.value())));
+		lang.setAutonym(autonym.value());
+		lang.setReadOnly(Boolean.parseBoolean(readonly.value()));
+		lang.setParent(new Language(parent.value()));
+		lang.setVersion(ver.value());
+		return lang;
 	}
 	
 	/**

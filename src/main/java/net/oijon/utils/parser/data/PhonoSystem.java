@@ -6,9 +6,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.Parser;
 
-//last edit: 5/24/23 -N3
+//last edit: 8/14/23 -N3
 
 /**
  * A way to transcribe all sounds allowed in a vocal tract. IPA is specified here as that
@@ -22,6 +23,9 @@ public class PhonoSystem {
 	private String name;
 	private ArrayList<PhonoTable> tables = new ArrayList<PhonoTable>();
 	private ArrayList<String> diacriticList = new ArrayList<String>();
+	
+	static Log log = Parser.getLog();
+	
 	/**
 	 * Creates an IPA preset. Useful when we just want the default PhonoSystem.
 	 */
@@ -153,6 +157,68 @@ public class PhonoSystem {
 	public ArrayList<String> getDiacritics() {
 		return diacriticList;
 	}
+	
+	public static PhonoSystem parse(Multitag docTag) throws Exception {
+		try {
+			Multitag tablelist = docTag.getMultitag("Tablelist");
+			Tag tablelistName = tablelist.getDirectChild("tablelistName");
+			Tag diacriticList;
+			try {
+				diacriticList = tablelist.getDirectChild("diacriticList");
+			} catch (Exception e) {
+				log.warn(e.toString());
+				diacriticList = new Tag("diacriticList", "");
+			}
+			PhonoSystem phonoSystem = new PhonoSystem(tablelistName.value());
+			ArrayList<String> diacritics = new ArrayList<String>(Arrays.asList(diacriticList.value().split(",")));
+			phonoSystem.setDiacritics(diacritics);
+			for (int i = 0; i < tablelist.getSubMultitags().size(); i++) {
+				if (tablelist.getSubMultitags().get(i).getName().equals("PhonoTable")) {
+					Multitag phonoTableTag = tablelist.getSubMultitags().get(i);
+					Tag tableName = phonoTableTag.getDirectChild("tableName");
+					Tag columnNames = phonoTableTag.getDirectChild("columnNames");
+					Tag soundsPerCell = phonoTableTag.getDirectChild("soundsPerCell");
+					Tag rowNames = phonoTableTag.getDirectChild("rowNames");
+					ArrayList<Tag> tableData = phonoTableTag.getUnattachedData();
+					
+					String name = tableName.value();
+					ArrayList<String> columns = new ArrayList<String>(Arrays.asList(columnNames.value().split(",")));
+					ArrayList<String> rowNamesList = new ArrayList<String>(Arrays.asList(rowNames.value().split(",")));
+					int perCell = 0;
+					try {
+						perCell = Integer.parseInt(soundsPerCell.value());
+					} catch (NumberFormatException nfe) {
+						log.err("soundsPerCell must be integer in " + tableName.value());
+						log.err(nfe.toString());
+						throw nfe;
+					}
+					
+					ArrayList<PhonoCategory> cats = new ArrayList<PhonoCategory>();
+					for (int j = 0; j < rowNamesList.size(); j++) {
+						PhonoCategory cat = new PhonoCategory(rowNamesList.get(j));
+						// TODO: allow multiple character sounds?
+						try {
+							String catData = tableData.get(j).value();
+							for (int k = 0; k < catData.length(); k++) {
+								cat.addSound(Character.toString(catData.charAt(k)));
+							}
+							cats.add(cat);
+						} catch (IndexOutOfBoundsException e) {
+							log.warn("No data found in table " + name);
+						}
+					}
+					
+					PhonoTable phonoTable = new PhonoTable(name, columns, cats, perCell);
+					phonoSystem.addTable(phonoTable);
+				}
+			}
+			return phonoSystem;
+		} catch (Exception e) {
+			log.err(e.toString());
+			throw e;
+		}
+	}
+	
 	/**
 	 * Converts a PhonoSystem object to a string
 	 */

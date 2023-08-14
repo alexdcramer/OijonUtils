@@ -2,7 +2,10 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
-//last edit: 5/24/23 -N3
+import net.oijon.utils.logger.Log;
+import net.oijon.utils.parser.Parser;
+
+//last edit: 8/14/23 -N3
 
 /**
  * The writing system of a language. Connects phonemes to graphemes, allowing
@@ -14,6 +17,8 @@ public class Orthography {
 
 	private Phonology ph = new Phonology();
 	private ArrayList<String[]> orthoList = new ArrayList<String[]>();
+	
+	static Log log = Parser.getLog();
 	
 	// TODO: allow ortho rules to have exceptions
 	
@@ -124,6 +129,21 @@ public class Orthography {
 	 */
 	public void remove(int i) {
 		orthoList.remove(i);
+	}
+	
+	public static Orthography parse(Multitag docTag) {
+		try {
+			Orthography ortho = new Orthography();
+			Multitag orthoTag = docTag.getMultitag("Orthography");
+			ArrayList<Tag> orthoPairs = orthoTag.getSubtags();
+			for (int i = 0; i < orthoPairs.size(); i++) {
+				ortho.add(orthoPairs.get(i).getName(), orthoPairs.get(i).value());
+			}
+			return ortho;
+		} catch (Exception e) {
+			log.err("No orthography found! Has one been created? Returning a blank orthography...");
+			return new Orthography();
+		}
 	}
 	
 	public String toString() {
