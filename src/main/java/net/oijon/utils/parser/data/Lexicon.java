@@ -2,7 +2,7 @@ package net.oijon.utils.parser.data;
 
 import java.util.ArrayList;
 
-//last edit: 4/30/23 -N3
+//last edit: 8/14/23 -N3
 
 /**
  * The words and meaning of a language
@@ -56,10 +56,9 @@ public class Lexicon {
 	 */
 	public void removeWord(Word word) {
 		for (int i = 0; i < wordList.size(); i++) {
-			if (wordList.get(i).getName().equals(word.getName())) {
-				if (wordList.get(i).getMeaning().equals(word.getMeaning())) {
-					wordList.remove(i);
-				}
+			Word checkWord = wordList.get(i);
+			if (checkWord.getName().equals(word.getName()) & checkWord.getMeaning().equals(word.getMeaning())) {
+				wordList.remove(i);
 			}
 		}
 	}
