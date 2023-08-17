@@ -12,7 +12,7 @@ import net.oijon.utils.info.Info;
 import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.Parser;
 
-//last edit: 8/14/23 -N3
+//last edit: 8/17/23 -N3
 
 /**
  * Bundles all parts of a language together into one object
@@ -35,6 +35,22 @@ public class Language {
 	private Date edited = Date.from(Instant.now());
 	private String versionEdited = Info.getVersion();
 	
+	private static File[] generateFiles(File startDir) {
+		FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File f, String name) {
+            	if (name.startsWith(".")) {
+            		return false;
+            	} else if (name.endsWith(".language")) {
+            		return true;
+            	}
+            	return false;
+            }
+        };
+        File[] files = startDir.listFiles(filter);
+        return files;
+	}
+	
 	/**
 	 * Gets all the .language files in the Susquehanna directory
 	 * @return A list of .language files
@@ -45,20 +61,7 @@ public class Language {
 		File[] files;
 		try {
             File f = new File(System.getProperty("user.home") + "/Susquehanna/");
-
-            FilenameFilter filter = new FilenameFilter() {
-                @Override
-                public boolean accept(File f, String name) {
-                	if (name.startsWith(".")) {
-                		return false;
-                	} else if (name.endsWith(".language")) {
-                		return true;
-                	}
-                	return false;
-                }
-            };
-            files = f.listFiles(filter);
-
+            files = generateFiles(f);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             files = null;
@@ -75,19 +78,7 @@ public class Language {
 		//TODO: Search in subdirectories as well
 		File[] files;
 		try {
-            FilenameFilter filter = new FilenameFilter() {
-                @Override
-                public boolean accept(File f, String name) {
-                	if (name.startsWith(".")) {
-                		return false;
-                	} else if (name.endsWith(".language")) {
-                		return true;
-                	}
-                	return false;
-                }
-            };
-            files = f.listFiles(filter);
-
+            files = generateFiles(f);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             files = null;
