@@ -13,7 +13,7 @@ import net.oijon.utils.parser.data.PhonoSystem;
 import net.oijon.utils.parser.data.Phonology;
 import net.oijon.utils.parser.data.Tag;
 
-//last edit: 8/14/2023 -N3
+//last edit: 8/17/2023 -N3
 
 /**
  * Parses a .language file, and allows various parts to be accessed
@@ -197,9 +197,9 @@ public class Parser {
 	 * @param input The .language structured string to be read
 	 * @return A multitag object with all data inside.
 	 * 
-	 * A warning to whoever dares edit this: This code, when edited just slightly,
-	 * likes to break in unpredictable ways. It is the definition of spaghetti code.
-	 * As such, every line has been commented to explain what it does.
+	 * This method has a history of being spaghetti code. Although it
+	 * has been cleaned up, each line will still remain commented for future
+	 * use. 
 	 */
 	private Multitag parseMulti(String input) {
 		// Removes tabs from input. Planned addition, but never added...
