@@ -125,9 +125,6 @@ public class Language {
 	
 	
 	public static Language parse(Multitag docTag) throws Exception {
-		Phonology phono = Phonology.parse(docTag);
-		Lexicon lexicon = Lexicon.parse(docTag);
-		Orthography ortho = Orthography.parse(docTag);
 		Multitag meta = docTag.getMultitag("Meta");
 		Tag ver = new Tag("utilsVersion");
 		try {
@@ -144,13 +141,9 @@ public class Language {
 			log.warn("The susquehannaVersion tag was deprecated as of 1.2.0.");
 		}
 		
-		Tag timeCreated = meta.getDirectChild("timeCreated");
-		Tag lastEdited = meta.getDirectChild("lastEdited");
-		Tag readonly = meta.getDirectChild("readonly");
-		Tag name = meta.getDirectChild("name");
-		Tag autonym = meta.getDirectChild("autonym");
+		// properties that must be parsed before anything else can be parsed get put up here
 		Tag parent = meta.getDirectChild("parent");
-		Language lang = new Language(name.value());
+		Language lang = new Language(meta.getDirectChild("name").value());
 		
 		Tag id = new Tag("id");
 		try {
@@ -171,13 +164,15 @@ public class Language {
 			lang.generateID();
 		}
 		
-		lang.setPhono(phono);
-		lang.setOrtho(ortho);
-		lang.setLexicon(lexicon);
-		lang.setCreated(new Date(Long.parseLong(timeCreated.value())));
-		lang.setEdited(new Date(Long.parseLong(lastEdited.value())));
-		lang.setAutonym(autonym.value());
-		lang.setReadOnly(Boolean.parseBoolean(readonly.value()));
+		// parse each property
+		lang.setPhono(Phonology.parse(docTag));
+		lang.setOrtho(Orthography.parse(docTag));
+		lang.setLexicon(Lexicon.parse(docTag));
+		lang.setCreated(new Date(Long.parseLong(meta.getDirectChild("timeCreated").value())));
+		lang.setEdited(new Date(Long.parseLong(meta.getDirectChild("lastEdited").value())));
+		lang.setAutonym(meta.getDirectChild("autonym").value());
+		lang.setReadOnly(Boolean.parseBoolean(meta.getDirectChild("readonly").value()));
+		// TODO: remove this/change to planned ID system
 		lang.setParent(new Language(parent.value()));
 		lang.setVersion(ver.value());
 		return lang;
