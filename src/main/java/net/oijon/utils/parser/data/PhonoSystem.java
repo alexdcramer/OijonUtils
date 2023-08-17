@@ -158,37 +158,37 @@ public class PhonoSystem {
 		return diacriticList;
 	}
 	
+	private static Tag parseDiacritics(Multitag tablelist) {
+		Tag diacriticList;
+		try {
+			diacriticList = tablelist.getDirectChild("diacriticList");
+		} catch (Exception e) {
+			log.warn(e.toString());
+			diacriticList = new Tag("diacriticList", "");
+		}
+		return diacriticList;
+	}
+	
 	public static PhonoSystem parse(Multitag docTag) throws Exception {
 		try {
 			Multitag tablelist = docTag.getMultitag("Tablelist");
-			Tag tablelistName = tablelist.getDirectChild("tablelistName");
-			Tag diacriticList;
-			try {
-				diacriticList = tablelist.getDirectChild("diacriticList");
-			} catch (Exception e) {
-				log.warn(e.toString());
-				diacriticList = new Tag("diacriticList", "");
-			}
-			PhonoSystem phonoSystem = new PhonoSystem(tablelistName.value());
+			Tag diacriticList = parseDiacritics(tablelist);
+			PhonoSystem phonoSystem = new PhonoSystem(tablelist.getDirectChild("tablelistName").value());
 			ArrayList<String> diacritics = new ArrayList<String>(Arrays.asList(diacriticList.value().split(",")));
 			phonoSystem.setDiacritics(diacritics);
 			for (int i = 0; i < tablelist.getSubMultitags().size(); i++) {
 				if (tablelist.getSubMultitags().get(i).getName().equals("PhonoTable")) {
 					Multitag phonoTableTag = tablelist.getSubMultitags().get(i);
-					Tag tableName = phonoTableTag.getDirectChild("tableName");
-					Tag columnNames = phonoTableTag.getDirectChild("columnNames");
-					Tag soundsPerCell = phonoTableTag.getDirectChild("soundsPerCell");
-					Tag rowNames = phonoTableTag.getDirectChild("rowNames");
 					ArrayList<Tag> tableData = phonoTableTag.getUnattachedData();
 					
-					String name = tableName.value();
-					ArrayList<String> columns = new ArrayList<String>(Arrays.asList(columnNames.value().split(",")));
-					ArrayList<String> rowNamesList = new ArrayList<String>(Arrays.asList(rowNames.value().split(",")));
+					String name = phonoTableTag.getDirectChild("tableName").value();
+					ArrayList<String> columns = new ArrayList<String>(Arrays.asList(phonoTableTag.getDirectChild("columnNames").value().split(",")));
+					ArrayList<String> rowNamesList = new ArrayList<String>(Arrays.asList(phonoTableTag.getDirectChild("rowNames").value().split(",")));
 					int perCell = 0;
 					try {
-						perCell = Integer.parseInt(soundsPerCell.value());
+						perCell = Integer.parseInt(phonoTableTag.getDirectChild("soundsPerCell").value());
 					} catch (NumberFormatException nfe) {
-						log.err("soundsPerCell must be integer in " + tableName.value());
+						log.err("soundsPerCell must be integer in " + phonoTableTag.getDirectChild("tableName").value());
 						log.err(nfe.toString());
 						throw nfe;
 					}
