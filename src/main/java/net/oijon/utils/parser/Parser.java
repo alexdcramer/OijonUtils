@@ -213,45 +213,41 @@ public class Parser {
 		Multitag tag = new Multitag(tagName);
 		// Loop over each line in file
 		for (int i = 1; i < splitLines.length; i++) {
-			// Checks if the line matches the pattern of a multitag marker
-			if (isMultitagMarker(splitLines[i])) {
-				// Checks if said line is a start marker
-				if (isMultitagStart(splitLines[i])) {
-					// Gets the name of the start marker
-					String name = getMarkerTagName(splitLines[i]);
-					// Gets the line number the tag was found on
-					int lineNum = i + 1;
-					// Creates a variable for the loop below
-					String tagInput = "";
-					// Loops over the lines in the file, starting at the start marker
-					for (int j = i; j < splitLines.length; j++) {
-						// Checks if a line is not an end marker
-						if (!isCloseForName(splitLines[j], name)) {
-							// Adds line to tagInput if it is not an end marker
-							tagInput += splitLines[j] + "\n";
-						// Checks if a line is an end marker
-						} else if (isCloseForName(splitLines[j], name)){
-							// Starts parsing tagInput
-							Multitag childTag = parseMulti(tagInput);
-							// Adds the parsed multitag to the current tag
-							tag.addMultitag(childTag);
-							// skips to the end of the multitag
-							i = j;
-							// breaks the loop that reads into the multitag
-							break;
-						}
-						// Checks if at the end of the file
-						if (j == splitLines.length - 1) {
-							// Logs if at end of file and close has not been found
-							log.err("Tag " + name + " on line " + lineNum + " is not closed!");
-						}
+			// Checks if the line matches the pattern of a multitag start marker
+			if (isMultitagStart(splitLines[i])) {
+				// Gets the name of the start marker
+				String name = getMarkerTagName(splitLines[i]);
+				// Gets the line number the tag was found on
+				int lineNum = i + 1;
+				// Creates a variable for the loop below
+				String tagInput = "";
+				// Loops over the lines in the file, starting at the start marker
+				for (int j = i; j < splitLines.length; j++) {
+					// Checks if a line is an end marker
+					if (isCloseForName(splitLines[j], name)){
+						// Starts parsing tagInput
+						Multitag childTag = parseMulti(tagInput);
+						// Adds the parsed multitag to the current tag
+						tag.addMultitag(childTag);
+						// skips to the end of the multitag
+						i = j;
+						// breaks the loop that reads into the multitag
+						break;
+					// Checks if at the end of the file
+					} else if (j == splitLines.length - 1) {
+						// Logs if at end of file and close has not been found
+						log.err("Tag " + name + " on line " + lineNum + " is not closed!");
+					// Line is not an end marker nor the 
+					} else {
+						// Adds line to tagInput if it is not an end marker
+						tagInput += splitLines[j] + "\n";
 					}
 				}
 			// Checks if line is named tag
 			} else if (isDataTag(splitLines[i])) {
 				// Adds tag object to parent
 				tag.addTag(parseSingle(splitLines[i]));
-			// Checks if line is nameless (weird)
+			// Checks if line is nameless (weird, but happens in very old .language files)
 			} else if (splitLines[i] != "") {
 				// Creates a tag with no name in memory
 				Tag childTag = new Tag("", splitLines[i]);
