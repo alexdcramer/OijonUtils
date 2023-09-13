@@ -14,7 +14,6 @@ public class GlossList extends ArrayList<Gloss> {
 
 	private static final long serialVersionUID = 2940848265098898582L;
 	private String name;
-	private ArrayList<Gloss> glosses;
 	
 	/**
 	 * Creates an empty GlossList
@@ -54,8 +53,8 @@ public class GlossList extends ArrayList<Gloss> {
 		String returnString = "===GlossList Start===\n";
 		returnString += "name:" + name + "\n";
 		returnString += "===Glosses Start===\n";
-		for (int i = 0; i < glosses.size(); i++) {
-			returnString += glosses.get(i).toString() + "\n";
+		for (int i = 0; i < this.size(); i++) {
+			returnString += this.get(i).toString() + "\n";
 		}
 		returnString += "===Glosses End===\n";
 		returnString += "===GlossList End===";

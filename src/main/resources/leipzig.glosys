@@ -1,0 +1,337 @@
+===GlossList Start===
+name:Leipzig
+===Glosses Start===
+===Gloss Start===
+abb:1
+meaning:first person
+===Gloss End===
+===Gloss Start===
+abb:2
+meaning:second person
+===Gloss End===
+===Gloss Start===
+abb:3
+meaning:third person
+===Gloss End===
+===Gloss Start===
+abb:A
+meaning:agent-like argument of canonical transitive verb
+===Gloss End===
+===Gloss Start===
+abb:ABL
+meaning:ablative
+===Gloss End===
+===Gloss Start===
+abb:ABS
+meaning:absolutive
+===Gloss End===
+===Gloss Start===
+abb:ACC
+meaning:accusative
+===Gloss End===
+===Gloss Start===
+abb:ADJ
+meaning:adjective
+===Gloss End===
+===Gloss Start===
+abb:ADV
+meaning:adverb(ial)
+===Gloss End===
+===Gloss Start===
+abb:AGR
+meaning:agreement
+===Gloss End===
+===Gloss Start===
+abb:ALL
+meaning:allative
+===Gloss End===
+===Gloss Start===
+abb:ANTIP
+meaning:antipassive
+===Gloss End===
+===Gloss Start===
+abb:APPL
+meaning:applicative
+===Gloss End===
+===Gloss Start===
+abb:ART
+meaning:article
+===Gloss End===
+===Gloss Start===
+abb:AUX
+meaning:auxiliary
+===Gloss End===
+===Gloss Start===
+abb:BEN
+meaning:benefactive
+===Gloss End===
+===Gloss Start===
+abb:CAUS
+meaning:causative
+===Gloss End===
+===Gloss Start===
+abb:CLF
+meaning:classifier
+===Gloss End===
+===Gloss Start===
+abb:COM
+meaning:comitative
+===Gloss End===
+===Gloss Start===
+abb:COMP
+meaning:complementizer
+===Gloss End===
+===Gloss Start===
+abb:COMPL
+meaning:complementive
+===Gloss End===
+===Gloss Start===
+abb:COND
+meaning:conditional
+===Gloss End===
+===Gloss Start===
+abb:COP
+meaning:copula
+===Gloss End===
+===Gloss Start===
+abb:CVB
+meaning:converb
+===Gloss End===
+===Gloss Start===
+abb:DAT
+meaning:dative
+===Gloss End===
+===Gloss Start===
+abb:DECL
+meaning:declarative
+===Gloss End===
+===Gloss Start===
+abb:DEF
+meaning:definite
+===Gloss End===
+===Gloss Start===
+abb:DEM
+meaning:demonstrative
+===Gloss End===
+===Gloss Start===
+abb:DET
+meaning:determiner
+===Gloss End===
+===Gloss Start===
+abb:DIST
+meaning:distal
+===Gloss End===
+===Gloss Start===
+abb:DISTR
+meaning:distributive
+===Gloss End===
+===Gloss Start===
+abb:DU
+meaning:dual
+===Gloss End===
+===Gloss Start===
+abb:DUR
+meaning:durative
+===Gloss End===
+===Gloss Start===
+abb:ERG
+meaning:ergative
+===Gloss End===
+===Gloss Start===
+abb:EXCL
+meaning:exclusive
+===Gloss End===
+===Gloss Start===
+abb:F
+meaning:feminine
+===Gloss End===
+===Gloss Start===
+abb:FOC
+meaning:focus
+===Gloss End===
+===Gloss Start===
+abb:FUT
+meaning:future
+===Gloss End===
+===Gloss Start===
+abb:GEN
+meaning:genitive
+===Gloss End===
+===Gloss Start===
+abb:IMP
+meaning:imperative
+===Gloss End===
+===Gloss Start===
+abb:INCL
+meaning:inclusive
+===Gloss End===
+===Gloss Start===
+abb:IND
+meaning:indicative
+===Gloss End===
+===Gloss Start===
+abb:INDF
+meaning:indefinite
+===Gloss End===
+===Gloss Start===
+abb:INF
+meaning:infinitive
+===Gloss End===
+===Gloss Start===
+abb:INS
+meaning:instrumental
+===Gloss End===
+===Gloss Start===
+abb:INTR
+meaning:intransitive
+===Gloss End===
+===Gloss Start===
+abb:IPFV
+meaning:imperfective
+===Gloss End===
+===Gloss Start===
+abb:IRR
+meaning:irrealis
+===Gloss End===
+===Gloss Start===
+abb:LOC
+meaning:locative
+===Gloss End===
+===Gloss Start===
+abb:M
+meaning:masculine
+===Gloss End===
+===Gloss Start===
+abb:N
+meaning:neuter
+===Gloss End===
+===Gloss Start===
+abb:NEG
+meaning:negation, negative
+===Gloss End===
+===Gloss Start===
+abb:NMLZ
+meaning:nominalizer/nominalization
+===Gloss End===
+===Gloss Start===
+abb:NOM
+meaning:nominative
+===Gloss End===
+===Gloss Start===
+abb:OBJ
+meaning:object
+===Gloss End===
+===Gloss Start===
+abb:OBL
+meaning:oblique
+===Gloss End===
+===Gloss Start===
+abb:P
+meaning:patient-like argument of canonical transitive verb
+===Gloss End===
+===Gloss Start===
+abb:PASS
+meaning:passive
+===Gloss End===
+===Gloss Start===
+abb:PFV
+meaning:perfective
+===Gloss End===
+===Gloss Start===
+abb:PL
+meaning:plural
+===Gloss End===
+===Gloss Start===
+abb:POSS
+meaning:possessive
+===Gloss End===
+===Gloss Start===
+abb:PRED
+meaning:predicative
+===Gloss End===
+===Gloss Start===
+abb:PRF
+meaning:perfect
+===Gloss End===
+===Gloss Start===
+abb:PRS
+meaning:present
+===Gloss End===
+===Gloss Start===
+abb:PROG
+meaning:progressive
+===Gloss End===
+===Gloss Start===
+abb:PROH
+meaning:prohibitive
+===Gloss End===
+===Gloss Start===
+abb:PROX
+meaning:proximal/proximate
+===Gloss End===
+===Gloss Start===
+abb:PST
+meaning:past
+===Gloss End===
+===Gloss Start===
+abb:PTCP
+meaning:participle
+===Gloss End===
+===Gloss Start===
+abb:PURP
+meaning:purposive
+===Gloss End===
+===Gloss Start===
+abb:Q
+meaning:question particle/marker
+===Gloss End===
+===Gloss Start===
+abb:QUOT
+meaning:quotative
+===Gloss End===
+===Gloss Start===
+abb:RECP
+meaning:reciprocal
+===Gloss End===
+===Gloss Start===
+abb:REFL
+meaning:reflexive
+===Gloss End===
+===Gloss Start===
+abb:REL
+meaning:relative
+===Gloss End===
+===Gloss Start===
+abb:RES
+meaning:resultative
+===Gloss End===
+===Gloss Start===
+abb:S
+meaning:single argument of canonical intransitive verb
+===Gloss End===
+===Gloss Start===
+abb:SBJ
+meaning:subject
+===Gloss End===
+===Gloss Start===
+abb:SBJV
+meaning:subjunctive
+===Gloss End===
+===Gloss Start===
+abb:SG
+meaning:singular
+===Gloss End===
+===Gloss Start===
+abb:TOP
+meaning:topic
+===Gloss End===
+===Gloss Start===
+abb:TR
+meaning:transitive
+===Gloss End===
+===Gloss Start===
+abb:VOC
+meaning:vocative
+===Gloss End===
+===Glosses End===
+===GlossList End===
