@@ -2,14 +2,18 @@ package net.oijon.utils.parser.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.oijon.utils.logger.Log;
 import net.oijon.utils.parser.Parser;
+import stream.IOBridge;
 
-//last edit: 8/14/23 -N3
+//last edit: 9/14/23 -N3
 
 /**
  * A way to transcribe all sounds allowed in a vocal tract. IPA is specified here as that
@@ -30,8 +34,28 @@ public class PhonoSystem {
 	 * Creates an IPA preset. Useful when we just want the default PhonoSystem.
 	 */
 	
-	public static final PhonoSystem IPA = new PhonoSystem("IPA", new ArrayList<PhonoTable>(
-			Arrays.asList(PhonoTable.IPAConsonants, PhonoTable.IPAVowels, PhonoTable.IPAOther)), PhonoCategory.IPADiacritics);
+	public static final PhonoSystem IPA = loadIPA();
+	
+	private static PhonoSystem loadIPA() {
+		PhonoSystem IPA = new PhonoSystem("Blank");
+		try {
+			InputStream IPAStream = PhonoSystem.class.getResourceAsStream("/IPA.phosys");
+			File tempFile = File.createTempFile(String.valueOf(IPAStream.hashCode()), ".tmp");
+			log.debug("IPA temp file created at " + tempFile.toString());
+	        tempFile.deleteOnExit();
+	        
+	        try (FileOutputStream toTemp = new FileOutputStream(tempFile)) {
+	        	IOBridge.write(IPAStream, toTemp);	        	
+	        	IPA = new PhonoSystem(tempFile);
+	        }
+	        
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.critical("Unable to open default IPA PhonoSystem!!! (Is the program corrupted?)");
+		}
+		return IPA;
+		
+	}
 	/**
 	 * Creates a PhonoSystem object with a pre-defined ArrayList
 	 * @param name The name of the phono system

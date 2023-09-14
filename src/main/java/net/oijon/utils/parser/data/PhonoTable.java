@@ -17,25 +17,6 @@ public class PhonoTable {
 	private ArrayList<PhonoCategory> rows;
 	private int soundsPerCell;
 	
-	public static final ArrayList<String> IPAConsonantColumnNames = new ArrayList<String>(
-			Arrays.asList("Bilabial", "Labiodental", "Dental", "Alveolar", "Postalveolar", "Retroflex", "Palatal", 
-					"Velar", "Uvular", "Pharyngeal", "Glottal"));
-	public static final ArrayList<String> IPAVowelColumnNames = new ArrayList<String>(
-			Arrays.asList("Front", "Central", "Back"));
-	public static final PhonoTable IPAConsonants = new PhonoTable("IPA Consonants", IPAConsonantColumnNames, 
-			new ArrayList<PhonoCategory>(
-					Arrays.asList(
-							PhonoCategory.IPAPlosive, PhonoCategory.IPANasal, PhonoCategory.IPATrill, PhonoCategory.IPATap,
-							PhonoCategory.IPAFricative, PhonoCategory.IPALateralFricative, PhonoCategory.IPAApproximant,
-							PhonoCategory.IPALateralApproximant)), 2);
-	public static final PhonoTable IPAVowels = new PhonoTable("IPA Vowels", IPAVowelColumnNames, new ArrayList<PhonoCategory>(
-			Arrays.asList(
-					PhonoCategory.IPAClose, PhonoCategory.IPANearClose, PhonoCategory.IPACloseMid, PhonoCategory.IPAMid,
-					PhonoCategory.IPAOpenMid, PhonoCategory.IPACloseOpen, PhonoCategory.IPAOpen)), 2);
-	public static final PhonoTable IPAOther = new PhonoTable("IPA Non-Pulmonics", new ArrayList<String>(Arrays.asList("No column names")), 
-			new ArrayList<PhonoCategory>(
-					Arrays.asList(PhonoCategory.IPAClick, PhonoCategory.IPAImplosive, PhonoCategory.IPAOther, PhonoCategory.IPAEncodingAnomolies)), 1);
-	
 	/**
 	 * Creates a PhonoTable
 	 * @param name The name of the PhonoTable (Consonants, Vowels, etc.)
