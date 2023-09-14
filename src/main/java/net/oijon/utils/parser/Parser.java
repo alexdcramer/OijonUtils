@@ -296,7 +296,6 @@ public class Parser {
 	/**
 	 * Parses a lexicon from a Parser
 	 * @return A Lexicon object with data from the Parser.
-	 * @throws Exception Thrown when a lexicon could not be found
 	 */
 	public Lexicon parseLexicon() {
 		return Lexicon.parse(this.tag);

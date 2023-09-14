@@ -118,7 +118,7 @@ public class Lexicon {
 	
 	/**
 	 * Parses a Lexicon from a multitag.
-	 * 99% of the time, you want to use {@link #net.oijon.utils.parser.Parser.parseOrthography()#wordList Parser.parseOrthography()} instead
+	 * 99% of the time, you want to use {@link net.oijon.utils.parser.Parser#parseLexicon()} instead
 	 * @param docTag The multitag containing the entire .language file
 	 * @return The lexicon contained in the multitag
 	 */

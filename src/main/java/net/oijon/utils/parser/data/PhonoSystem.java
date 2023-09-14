@@ -35,8 +35,7 @@ public class PhonoSystem {
 	/**
 	 * Creates a PhonoSystem object with a pre-defined ArrayList
 	 * @param name The name of the phono system
-	 * @param categories The pre-defined ArrayList
-	 * @param columnNames The names of each column on the chart
+	 * @param tables The list of all tables used in the phono system
 	 */
 	public PhonoSystem(String name, ArrayList<PhonoTable> tables) {
 		this.name = name;

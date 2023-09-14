@@ -47,6 +47,7 @@
 		</repository>
 	</distributionManagement>
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<resources>
 		    <resource>
 		    	<directory>src/main/resources</directory>
@@ -148,6 +149,18 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+	            <artifactId>maven-war-plugin</artifactId>
+	            <version>3.2.2</version>
+	            <configuration>
+	                <failOnMissingWebXml>false</failOnMissingWebXml>
+	                <archive>
+	                    <manifest>
+	                        <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+	                    </manifest>
+	                </archive>
+	            </configuration>
+	        </plugin>
 		</plugins>
 	</build>
 	<licenses>

@@ -22,7 +22,6 @@ public class Phonology {
 	
 	/**
 	 * Converts a string array of sounds into a phonology
-	 * @param pf The file the phonology is saved to
 	 * @param array The array to be converted
 	 */
 	public Phonology(String[] array) {

@@ -209,7 +209,7 @@ public class Word {
 	
 	/**
 	 * Adds a homonym to a word, unless it has already been added
-	 * @param syn The homonym to be added
+	 * @param hom The homonym to be added
 	 */
 	public void addHomonym(Word hom) {
 		if (!homonyms.contains(hom)) {
@@ -227,7 +227,7 @@ public class Word {
 	
 	/**
 	 * Replaces the homonym list with a new list
-	 * @param homonym The list replacing the old list
+	 * @param homonyms The list replacing the old list
 	 */
 	public void setHomonyms(ArrayList<Word> homonyms) {
 		homonyms = this.homonyms;
