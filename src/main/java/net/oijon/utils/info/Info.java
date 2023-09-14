@@ -1,5 +1,8 @@
 package net.oijon.utils.info;
 
+import java.io.IOException;
+import java.util.Properties;
+
 //last edit: 8/14/23 -N3
 
 /**
@@ -9,15 +12,12 @@ package net.oijon.utils.info;
  */
 public class Info {
 
-	private static String versionNum = "1.2.5-SNAPSHOT";
-	private static String fullVersion = "Oijon Utils - v" + versionNum;
-	
 	/**
 	 * Gets the current version of Oijon Utils, for example "Oijon Utils - v1.2.0"
 	 * @return The current version of Oijon Utils
 	 */
 	public static String getVersion() {
-		return fullVersion;
+		return "Oijon Utils - v" + getVersionNum();
 	}
 	
 	/**
@@ -25,7 +25,15 @@ public class Info {
 	 * @return The current version number of Oijon Utils
 	 */
 	public static String getVersionNum() {
-		return versionNum;
+		Properties properties = new Properties();
+		String returnString = "UNKNOWN";
+		try {
+			properties.load(Info.class.getResourceAsStream("project.properties"));
+			returnString = properties.getProperty("version");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return returnString;
 	}
 	
 }

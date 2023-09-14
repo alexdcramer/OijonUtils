@@ -8,6 +8,7 @@ import net.oijon.utils.parser.data.GlossList;
 public class EZGloss {
 	
 	private static Scanner sc = new Scanner(System.in);
+	private static GlossList glossList;
 	
 	private static String getName() {
 		System.out.println("Welcome to EZGloss!");
@@ -21,11 +22,37 @@ public class EZGloss {
 		return name;
 	}
 	
+	private static boolean getGloss() {
+		boolean isRunning = true;
+		
+		System.out.print("\nAbbreviation: ");
+		String abbr = sc.nextLine();
+		if (abbr.equals("Done!")) {
+			System.out.println("OK, " + glossList.size() + " glosses added.");
+			isRunning = false;
+			return isRunning;
+		}
+		System.out.print("\nMeaning: ");
+		String m = sc.nextLine();
+		if (m.equals("Done!")) {
+			System.out.println("OK, " + glossList.size() + " glosses added.");
+			isRunning = false;
+			return isRunning;
+		}
+		
+		Gloss g = new Gloss(abbr, m);
+		glossList.add(g);
+		
+		System.out.println("Added gloss! Enter \"Done!\" (case sensitive) to exit");
+		
+		return isRunning;
+	}
+	
 	public static void main(String[] args) {
 		
 		String name = getName();
 		
-		GlossList glossList = new GlossList(name);
+		glossList = new GlossList(name);
 		
 		System.out.println("Name \"" + name + "\" selected. Start entering glosses now.");
 		System.out.println("Enter \"Done!\" (case sensitive) to exit");
@@ -33,25 +60,7 @@ public class EZGloss {
 		boolean isRunning = true;
 		
 		while (isRunning) {
-			System.out.print("\nAbbreviation: ");
-			String abbr = sc.nextLine();
-			if (abbr.equals("Done!")) {
-				System.out.println("OK, " + glossList.size() + " glosses added.");
-				isRunning = false;
-				break;
-			}
-			System.out.print("\nMeaning: ");
-			String m = sc.nextLine();
-			if (m.equals("Done!")) {
-				System.out.println("OK, " + glossList.size() + " glosses added.");
-				isRunning = false;
-				break;
-			}
-			
-			Gloss g = new Gloss(abbr, m);
-			glossList.add(g);
-			
-			System.out.println("Added gloss! Enter \"Done!\" (case sensitive) to exit");
+			isRunning = getGloss();
 		}
 		sc.close();
 		
