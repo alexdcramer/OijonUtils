@@ -1,5 +1,9 @@
 package net.oijon.utils.info;
 
+import java.io.FileReader;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
 //last edit: 8/14/23 -N3
 
 /**
@@ -9,8 +13,19 @@ package net.oijon.utils.info;
  */
 public class Info {
 
-	private static String versionNum = Info.class.getPackage().getImplementationVersion();
+	private static String versionNum = generateVersionNum();
 	private static String fullVersion = "Oijon Utils - v" + versionNum;
+	
+	private static String generateVersionNum() {
+		try {
+			MavenXpp3Reader reader = new MavenXpp3Reader();
+	        Model model = reader.read(new FileReader("pom.xml"));
+	        return model.getVersion();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "null";
+		}
+	}
 	
 	/**
 	 * Gets the current version of Oijon Utils, for example "Oijon Utils - v1.2.0"
